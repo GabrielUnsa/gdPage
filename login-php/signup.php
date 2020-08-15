@@ -2,14 +2,39 @@
     require 'database.php';
 
     $msg = '';
-    if( !empty( $_POST['nombre'] ) && !empty( $_POST['password'] ) ){
-        $sql = "INSERT INTO users ( nombre, apellido, nickname, password ) VALUES ( :nombre, :apellido, :nickname, :password )";
-        $stmt = $conn->prepare( $sql ); #Consulta sql
-        $stmt->bindParam( ':nombre', $_POST['nombre'] ); #Vinculacion del parametro Name
-        $stmt->bindParam( ':apellido', $_POST['apellido'] );
-        $stmt->bindParam( ':nickname', $_POST['nickname'] );
-        $password = password_hash($_POST['password'], PASSWORD_BCRYPT); #Codificacion de la Password
-        $stmt->bindParam(':password', $password); #Vinculacion del parametro Password
+    if( !empty( $_POST['nombre'] ) && !empty( $_POST['apellido'] )
+        !empty( $_POST['nickname'] ) && !empty( $_POST['password'] ) 
+        && !empty( $_POST['conf_password'] ) ){
+            if( $_POST['password'] == $_POST['conf_password'] ){
+                $full_name = $_POST['nombre'];
+                $last_name = $_POST['apellido'];
+                $nickname = $_POST['nickaname'];
+                $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+                $query = mysql_query("SELECT * FROM users WHERE username=’".$ncikname."’");
+                $numrows = mysql_num_rows($query);
+                if( $numrows == 0 ){
+                    $sql = " INSERT INTO users ( nombre, apellido, nickname, password ) VALUES ( '$full_name' ,'$last_name' ,'$nickname' ,'$password' ) ";
+                    $result = mysql_query($sql);                                   
+                    if( $result ){
+                        $msg = "Cuenta creada";
+                    }else{
+                        $msg = "Error INSERT";
+                    }
+                } else{
+                    $msg = 'Usuario ya existente!';
+                }
+                /*$sql = "INSERT INTO users ( nombre, apellido, nickname, password ) VALUES ( :nombre, :apellido, :nickname, :password )";
+                $stmt = $conn->prepare( $sql ); #Consulta sql
+                $stmt->bindParam( ':nombre', $_POST['nombre'] ); #Vinculacion del parametro Name
+                $stmt->bindParam( ':apellido', $_POST['apellido'] );
+                $stmt->bindParam( ':nickname', $_POST['nickname'] );
+                $password = password_hash($_POST['password'], PASSWORD_BCRYPT); #Codificacion de la Password
+                $stmt->bindParam(':password', $password); #Vinculacion del parametro Password*/
+            }else{
+                $msg = 'No coinciden las contraseñas ingresadas';
+            }
+    }else{
+        $msg = 'Debe completar todos los campos';
     }
 ?>
 
@@ -29,7 +54,7 @@
 
         <h1> Registración </h1>
         <span> o <a href="login.php"> Identificarse </a></span>
-
+        <?php if ( !empty( $msg ) ) { echo "<p class=\"error\">" . "Mensaje: ". $msg . "</p>"; } ?>
         <form action="signup.php" method="POST">
             <input type="text" name="nombre" placeholder="Ingrese su nombre">
             <input type="text" name="apellido" placeholder="Ingrese su apellido">
