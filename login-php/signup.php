@@ -14,7 +14,8 @@
                 $numrows = mysql_num_rows($query);
                 if( $numrows == 0 ){
                     $sql = " INSERT INTO users ( nombre, apellido, nickname, password ) VALUES ( '$full_name' ,'$last_name' ,'$nickname' ,'$password' ) ";
-                    $result = mysql_query($sql);                                   
+                    $result = mysql_query($sql);
+                    $result = mysql($sql);
                     if( $result ){
                         $msg = "Cuenta creada";
                     }else{
