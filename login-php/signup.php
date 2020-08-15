@@ -2,18 +2,14 @@
     require 'database.php';
 
     $msg = '';
-    if( !empty( $_POST['Nombre'] ) && !empty( $_POST['Password'] ) ){
-        $sql = "INSERT INTO users ( Nombre, Password ) VALUES ( :Name, :Password )";
+    if( !empty( $_POST['nombre'] ) && !empty( $_POST['password'] ) ){
+        $sql = "INSERT INTO users ( nombre, apellido, nickname, password ) VALUES ( :nombre, :apellido, :nickname, :password )";
         $stmt = $conn->prepare( $sql ); #Consulta sql
-        $stmt->bindParam( ':Name', $_POST['Nombre'] ); #Vinculacion del parametro Name
-        $password = password_hash($_POST['Password'], PASSWORD_BCRYPT); #Codificacion de la Password
-        $stmt->bindParam(':Password', $password); #Vinculacion del parametro Password
-    }
-    if ( $stmt->execute() ){
-        $msg = 'Usuario Agregado';
-    }
-    else{
-        $msg = 'Se a producido un error vuelva a intantarlo nuevamente mas tarde';
+        $stmt->bindParam( ':nombre', $_POST['nombre'] ); #Vinculacion del parametro Name
+        $stmt->bindParam( ':apellido', $_POST['apellido'] );
+        $stmt->bindParam( ':nickname', $_POST['nickname'] );
+        $password = password_hash($_POST['password'], PASSWORD_BCRYPT); #Codificacion de la Password
+        $stmt->bindParam(':password', $password); #Vinculacion del parametro Password
     }
 ?>
 
@@ -33,17 +29,14 @@
 
         <h1> Registración </h1>
         <span> o <a href="login.php"> Identificarse </a></span>
-        
+
         <form action="signup.php" method="POST">
-            <input type="text" name="Nombre" placeholder="Ingrese su nombre">
-            <input type="password" name="Password" placeholder="Ingrese su contraseña">
-            <input type="password" name="Conf_Password" placeholder="Confirme su contraseña">
+            <input type="text" name="nombre" placeholder="Ingrese su nombre">
+            <input type="text" name="apellido" placeholder="Ingrese su apellido">
+            <input type="text" name="nickname" placeholder="Ingrese su usuario">
+            <input type="password" name="password" placeholder="Ingrese su contraseña">
+            <input type="password" name="conf_password" placeholder="Confirme su contraseña">
             <input type="submit" value="Registrar">
         </form>
-
-        <?php if( !empty($msg) ): ?>
-            <p> <?php $msg ?> </p>
-        <?php endif; ?>
-
     </body>
 </html>

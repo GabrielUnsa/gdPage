@@ -3,8 +3,8 @@
     require 'database.php';
 
     if( isset($_SESSION['user_id']) ){
-        $records = $conn->prepare('SELECT Id, Nombre, Password FROM users WHERE id = :id');
-        $records->bindParam(':id', $_SESSION['user_id']);
+        $records = $conn->prepare('SELECT idusr, nickname, password FROM users WHERE idusr = :idusr');
+        $records->bindParam(':idusr', $_SESSION['user_id']);
         $records->execute();
         $records = $records->fetch(PDO::FETCH_ASSOC);
         $user = null;
@@ -27,7 +27,7 @@
     <body>
         <?php require 'partials/header.php' ?>
         <?php if( !empty( $user ) ): ?>
-            <br> Bienvenido!.<?= $user['Nombre'] ?>
+            <br> Bienvenido!.<?= $user['nickname'] ?>
             <br> Sigamos trabajando! 
             <a href="loguot.php"> Salir</a>
         <?php else:?> 

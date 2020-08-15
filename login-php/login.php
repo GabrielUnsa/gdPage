@@ -5,15 +5,15 @@
     }
     require 'database.php';
 
-    if( !empty( $_POST['Nombre'] ) && !empty( $_POST['Password'] ) ){
-        $records = $conn->prepare('SELECT Id, Nombre, Password FROM users WHERE Nombre = :Nombre');
-        $records->bindParam( ':Nombre', $_POST['Nombre'] );
+    if( !empty( $_POST['nickname'] ) && !empty( $_POST['password'] ) ){
+        $records = $conn->prepare('SELECT idusr, nickname, Password FROM users WHERE nickname = :nickname');
+        $records->bindParam( ':nickname', $_POST['nickname'] );
         $records->execute();
         $results = $results->fetch(PDO::FETCH_ASSOC);
         $msg = '';
 
-        if( count( $results ) > 0 && password_verify( $_POST['Password'], $results['Password'] ) ){
-            $_SESSION['user_id'] = $results['id'];
+        if( count( $results ) > 0 && password_verify( $_POST['password'], $results['password'] ) ){
+            $_SESSION['user_id'] = $results['idusr'];
             header("Location: /login-php"); #redireccionamiento
         }
         else{
@@ -37,8 +37,8 @@
         <h1>Login</h1>
         <span> o <a href="signup.php"> Registrarse </a></span>
         <form action="login.php" method="POST">   
-            <input type="text" name="Nombre" placeholder="Ingrese su nombre">
-            <input type="password" name="Password" placeholder="Ingrese su contraseña">
+            <input type="text" name="nickname" placeholder="Ingrese su cuenta">
+            <input type="password" name="password" placeholder="Ingrese su contraseña">
             <input type="submit" value="Entrar">
         </form>
         <?php if( !empty($msg) ): ?>

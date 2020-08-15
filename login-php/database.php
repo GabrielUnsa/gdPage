@@ -1,11 +1,11 @@
 <?php 
-$server = 'localhost:8080';
+$server = 'localhost';
 $username = 'root';
-$password = '0000';
-$database = 'db_php_name';
+$password = '';
+$database = 'gdGroundTruth';
 
 try {
-    $conn = new PDO( "mysql:hots=$server; dbname=$database; $username; $password" );
+    $conn = new PDO( "mysql:host=$server; dbname=$database;" ,$username, $password );
 } catch ( PDOException $e ) {
     die( 'Conexion fallida: '. $e->getMessage() );
 }
