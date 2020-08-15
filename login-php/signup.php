@@ -6,11 +6,21 @@
         !empty( $_POST['nickname'] ) && !empty( $_POST['password'] ) 
         && !empty( $_POST['conf_password'] ) ){
             if( $_POST['password'] == $_POST['conf_password'] ){
-                $full_name = $_POST['nombre'];
-                $last_name = $_POST['apellido'];
-                $nickname = $_POST['nickaname'];
-                $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
-                $query = mysql_query("SELECT * FROM users WHERE username=’".$ncikname."’");
+                try{
+                    $full_name = $_POST['nombre'];
+                    $last_name = $_POST['apellido'];
+                    $nickname = $_POST['nickaname'];
+                    $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+                    $sql = "INSERT INTO users (nombre, apellido, nickname, password) VALUES (:nombre, :apellido, :nickname, :password)";
+                    $stmt = $pdoConnect -> prepare($sql);
+                    $stmt -> bindParam(':nombre', $nombre, PDO::PARAM_STR);
+                    $stmt -> bindParam(':apellido', );
+                }catch(PDOException $e){
+                    print 'ERROR: '.$e->getMessage();
+                    print '<br/>Data Not Inserted';
+                }
+                
+                /*$query = mysql_query("SELECT * FROM users WHERE username=’".$ncikname."’");
                 $numrows = mysql_num_rows($query);
                 if( $numrows == 0 ){
                     $sql = " INSERT INTO users ( nombre, apellido, nickname, password ) VALUES ( '$full_name' ,'$last_name' ,'$nickname' ,'$password' ) ";
@@ -22,7 +32,7 @@
                     }
                 } else{
                     $msg = 'Usuario ya existente!';
-                }
+                }*/
                 /*$sql = "INSERT INTO users ( nombre, apellido, nickname, password ) VALUES ( :nombre, :apellido, :nickname, :password )";
                 $stmt = $conn->prepare( $sql ); #Consulta sql
                 $stmt->bindParam( ':nombre', $_POST['nombre'] ); #Vinculacion del parametro Name
