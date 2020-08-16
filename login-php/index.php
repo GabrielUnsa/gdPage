@@ -6,7 +6,7 @@
         $records = $conn->prepare('SELECT idusr, nickname, password FROM users WHERE idusr = :idusr');
         $records->bindParam(':idusr', $_SESSION['user_id']);
         $records->execute();
-        $records = $records->fetch(PDO::FETCH_ASSOC);
+        $results = $records->fetch();
         $user = null;
         if( count($results) > 0 ){
             $user = $results;
@@ -29,7 +29,7 @@
         <?php if( !empty( $user ) ): ?>
             <br> Bienvenido!.<?= $user['nickname'] ?>
             <br> Sigamos trabajando! 
-            <a href="loguot.php"> Salir</a>
+            <a href="logout.php"> Salir</a>
         <?php else:?> 
             <h1> Login</h1>
             <a href="login.php">Identificarse</a> o 

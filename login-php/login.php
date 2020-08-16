@@ -6,13 +6,12 @@
     require 'database.php';
 
     if( !empty( $_POST['nickname'] ) && !empty( $_POST['password'] ) ){
-        $records = $conn->prepare('SELECT idusr, nickname, Password FROM users WHERE nickname = :nickname');
+        $records = $conn->prepare('SELECT idusr, nickname, password FROM users WHERE nickname = :nickname');
         $records->bindParam( ':nickname', $_POST['nickname'] );
         $records->execute();
-        $results = $results->fetch(PDO::FETCH_ASSOC);
+        $results = $records->fetch();
         $msg = '';
-
-        if( count( $results ) > 0 && password_verify( $_POST['password'], $results['password'] ) ){
+        if( Count($results) > 0 && password_verify( $_POST['password'], $results['password'] ) ){
             $_SESSION['user_id'] = $results['idusr'];
             header("Location: /login-php"); #redireccionamiento
         }

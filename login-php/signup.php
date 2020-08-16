@@ -2,53 +2,38 @@
     require 'database.php';
 
     $msg = '';
-    if( !empty( $_POST['nombre'] ) && !empty( $_POST['apellido'] )
+    if( !empty( $_POST['nombre'] ) && !empty( $_POST['apellido'] ) &&
         !empty( $_POST['nickname'] ) && !empty( $_POST['password'] ) &&
         !empty( $_POST['conf_password'] ) ){
-            if( $_POST['password'] == $_POST['conf_password'] ){
-                try{
-                    $full_name = $_POST['nombre'];
-                    $last_name = $_POST['apellido'];
-                    $nickname = $_POST['nickaname'];
-                    $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
-                    $sql = "INSERT INTO users (nombre, apellido, nickname, password) VALUES (:nombre, :apellido, :nickname, :password)";
-                    $stmt = $pdoConnect -> prepare($sql);
-                    $stmt -> bindParam( ':nombre', $nombre, PDO::PARAM_STR );
-                    $stmt -> bindParam( ':apellido', $apellido, PDO::PARAM_STR );
-                    $stmt -> bindParam( ':nickname', $nickname, PDO::PARAM_STR );
-                    $stmt -> bindParam( ':password', $password, PDO::PARAM_STR );
-                    $pdoExec = $stmt -> execute();
-                }catch(PDOException $e){
-                    print 'ERROR: '.$e->getMessage();
-                    print '<br/>Data Not Inserted';
-                }
-                if($pdoExec)
-                {
-                    echo 'Data Inserted';
-                }
-                /*$query = mysql_query("SELECT * FROM users WHERE username=’".$ncikname."’");
-                $numrows = mysql_num_rows($query);
-                if( $numrows == 0 ){
-                    $sql = " INSERT INTO users ( nombre, apellido, nickname, password ) VALUES ( '$full_name' ,'$last_name' ,'$nickname' ,'$password' ) ";
-                    $result = mysql_query($sql);
-                    $result = mysql($sql);
-                    if( $result ){
-                        $msg = "Cuenta creada";
-                    }else{
-                        $msg = "Error INSERT";
-                    }
-                } else{
-                    $msg = 'Usuario ya existente!';
-                }*/
-                /*$sql = "INSERT INTO users ( nombre, apellido, nickname, password ) VALUES ( :nombre, :apellido, :nickname, :password )";
-                $stmt = $conn->prepare( $sql ); #Consulta sql
-                $stmt->bindParam( ':nombre', $_POST['nombre'] ); #Vinculacion del parametro Name
-                $stmt->bindParam( ':apellido', $_POST['apellido'] );
-                $stmt->bindParam( ':nickname', $_POST['nickname'] );
-                $password = password_hash($_POST['password'], PASSWORD_BCRYPT); #Codificacion de la Password
-                $stmt->bindParam(':password', $password); #Vinculacion del parametro Password*/
+            $sql = "SELECT COUNT(nickname) FROM users WHERE nickname = :nickname";
+            $stmt = $conn -> prepare($sql);
+            $stmt->bindParam( ':nickname', $_POST['nickname'] );
+            $stmt -> execute();
+            $row = $stmt -> fetchColumn();
+            if( $row > 0 ){
+                $msg = 'Existe un usuario con ese nickname';
             }else{
-                $msg = 'No coinciden las contraseñas ingresadas';
+                if( $_POST['password'] == $_POST['conf_password'] ){
+                    try{
+                        $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+                        $sql = "INSERT INTO users (nombre, apellido, nickname, password) VALUES (:nombre, :apellido, :nickname, :password)";
+                        $stmt = $conn -> prepare($sql);
+                        $stmt -> bindParam( ':nombre',  $_POST['nombre'] );
+                        $stmt -> bindParam( ':apellido', $_POST['apellido'] );
+                        $stmt -> bindParam( ':nickname', $_POST['nickname'] );
+                        $stmt -> bindParam( ':password', $password );
+                        if ( $stmt -> execute() ){
+                            $msg = 'New User Added';
+                        }else{
+                            $msg = 'NOT';
+                        }
+                    }catch(PDOException $e){
+                        print 'ERROR: '.$e->getMessage();
+                        print '<br/>Data Not Inserted';
+                    }
+                }else{
+                    $msg = 'No coinciden las contraseñas ingresadas';
+                }
             }
     }else{
         $msg = 'Debe completar todos los campos';
