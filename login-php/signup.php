@@ -3,8 +3,8 @@
 
     $msg = '';
     if( !empty( $_POST['nombre'] ) && !empty( $_POST['apellido'] )
-        !empty( $_POST['nickname'] ) && !empty( $_POST['password'] ) 
-        && !empty( $_POST['conf_password'] ) ){
+        !empty( $_POST['nickname'] ) && !empty( $_POST['password'] ) &&
+        !empty( $_POST['conf_password'] ) ){
             if( $_POST['password'] == $_POST['conf_password'] ){
                 try{
                     $full_name = $_POST['nombre'];
@@ -13,13 +13,19 @@
                     $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
                     $sql = "INSERT INTO users (nombre, apellido, nickname, password) VALUES (:nombre, :apellido, :nickname, :password)";
                     $stmt = $pdoConnect -> prepare($sql);
-                    $stmt -> bindParam(':nombre', $nombre, PDO::PARAM_STR);
-                    $stmt -> bindParam(':apellido', );
+                    $stmt -> bindParam( ':nombre', $nombre, PDO::PARAM_STR );
+                    $stmt -> bindParam( ':apellido', $apellido, PDO::PARAM_STR );
+                    $stmt -> bindParam( ':nickname', $nickname, PDO::PARAM_STR );
+                    $stmt -> bindParam( ':password', $password, PDO::PARAM_STR );
+                    $pdoExec = $stmt -> execute();
                 }catch(PDOException $e){
                     print 'ERROR: '.$e->getMessage();
                     print '<br/>Data Not Inserted';
                 }
-                
+                if($pdoExec)
+                {
+                    echo 'Data Inserted';
+                }
                 /*$query = mysql_query("SELECT * FROM users WHERE username=’".$ncikname."’");
                 $numrows = mysql_num_rows($query);
                 if( $numrows == 0 ){
