@@ -1,23 +1,30 @@
-<?php
+<?php 
     session_start();
+    if( isset($_SESSION['user_id']) ){
+        header('Location: /login-php');
+    }
     require 'database.php';
 
-    if( isset($_SESSION['user_id']) ){
-        $records = $conn->prepare('SELECT idusr, nickname, password FROM users WHERE idusr = :idusr');
-        $records->bindParam(':idusr', $_SESSION['user_id']);
+    if( !empty( $_POST['nickname'] ) && !empty( $_POST['password'] ) ){
+        $records = $conn->prepare('SELECT idusr, nickname, password FROM users WHERE nickname = :nickname');
+        $records->bindParam( ':nickname', $_POST['nickname'] );
         $records->execute();
         $results = $records->fetch();
-        $user = null;
-        if( count($results) > 0 ){
-            $user = $results;
+        $msg = '';
+        if( Count($results) > 0 && password_verify( $_POST['password'], $results['password'] ) ){
+            $_SESSION['user_id'] = $results['idusr'];
+            header("Location: /login-php/selection.php"); #redireccionamiento
+        }
+        else{
+            $msg = 'No existe el usuario o la contraseña es incorrecta';
         }
     }
 ?>
 
-<!<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
     <head>
-        <title> Bienvenidos al GD</title>
+        <title>Login</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- Geting Google Fonts -->
@@ -26,14 +33,15 @@
     </head>
     <body>
         <?php require 'partials/header.php' ?>
-        <?php if( !empty( $user ) ): ?>
-            <br> Bienvenido!.<?= $user['nickname'] ?>
-            <br> Sigamos trabajando! 
-            <a href="logout.php"> Salir</a>
-        <?php else:?> 
-            <h1> Login</h1>
-            <a href="login.php">Identificarse</a> o 
-            <a href="signup.php"> Registrarse</a>
-        <?php endif;?>
+        <h1>Login</h1>
+        <span> o <a href="signup.php"> Registrarse </a></span>
+        <form action="index.php" method="POST">   
+            <input type="text" name="nickname" placeholder="Ingrese su cuenta">
+            <input type="password" name="password" placeholder="Ingrese su contraseña">
+            <input type="submit" value="Entrar">
+        </form>
+        <?php if( !empty($msg) ): ?>
+            <p> <?php $msg ?> </p>
+        <?php endif; ?>
     </body>
 </html>

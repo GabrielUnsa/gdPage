@@ -55,7 +55,7 @@
         <?php require 'partials/header.php' ?>
 
         <h1> Registración </h1>
-        <span> o <a href="login.php"> Identificarse </a></span>
+        <span> o <a href="index.php"> Identificarse </a></span>
         <?php if ( !empty( $msg ) ) { echo "<p class=\"error\">" . "Mensaje: ". $msg . "</p>"; } ?>
         <form action="signup.php" method="POST">
             <input type="text" name="nombre" placeholder="Ingrese su nombre">
