@@ -46,9 +46,16 @@
             <option value = gd11> 11 </option>
             <option value = gd12> 12 </option>
         </select>
-        <!--<script type="text/javascript" src="js/index.js"> </script>-->
         <br>
-        <div id='ncap'> </div>
+        <label> Numero de Capitulo</label>
+        <select id='ncap' name='ncap'> </select>
+        <br>
+        <label> Numero de Pagina</label>
+        <select id='npag' name='npag'> </select>
+        <br>
+        <label> Numero de Linea</label>
+        <select id='nline' name='nline'> </select>
+        <br>
         <a href="logout.php"> Salir</a>
 </body>
 </html>
@@ -56,8 +63,15 @@
 <script type = "text/javascript">
     $(document).ready(function(){
         recargarLista();
-        $('#GD').change(function(){
+        listpag();
+        $('#GD').click(function(){
             recargarLista();
+        });
+        $('#ncap').click(function(){
+            listpag();
+        });
+        $('#npag').click(function () {
+            listline();
         });
     })
 </script>
@@ -66,10 +80,36 @@
     function recargarLista(){
         $.ajax({
             type: "POST",
-            url: "carga.php",
+            url: "cargaCap.php",
             data: "guemes=" + $('#GD').val(),
             success:function(r){
                 $('#ncap').html(r)
+            }
+        });
+    }
+</script>
+
+<script type = "text/javascript">
+    function listpag(){
+        $.ajax({
+            type: "POST",
+            url: "cargaPag.php",
+            data: { "guemes": $('#GD').val(), "cap": $('#ncap').val()},
+            success:function(r){
+                $('#npag').html(r)
+            }
+        });
+    }
+</script>
+
+<script type = "text/javascript">
+    function listline(){
+        $.ajax({
+            type: "POST",
+            url: "cargaLine.php",
+            data: { "guemes": $('#GD').val(), "cap": $('#ncap').val(), "pag":$('#npag').val()},
+            success:function(p){
+                $('#nline').html(p)
             }
         });
     }
