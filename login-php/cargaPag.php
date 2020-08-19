@@ -1,7 +1,7 @@
 <?php
     require 'database.php';
     $guemes = $_POST['guemes'];
-    $records = $conn->prepare("SELECT DISTINCT npag FROM {$guemes} WHERE idusr IS NULL AND ncap = :ncap");
+    $records = $conn->prepare("SELECT DISTINCT npag FROM {$guemes} WHERE idusr IS NOT NULL AND ncap = :ncap");
     $records -> bindParam( ':ncap' ,$_POST['cap']);
     $records->execute();
     $results = $records->fetchAll();

@@ -2,7 +2,7 @@
     require 'database.php';
     $guemes = $_POST['guemes'];
     $band = TRUE;
-    $records = $conn->prepare("SELECT DISTINCT ncap FROM {$guemes} WHERE idusr IS NULL");
+    $records = $conn->prepare("SELECT DISTINCT ncap FROM {$guemes} WHERE idusr IS NOT NULL");
     $records->execute();
     $results = $records->fetchAll();
     foreach ($results as $value) {
