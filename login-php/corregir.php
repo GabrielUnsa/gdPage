@@ -34,7 +34,7 @@
         <?php 
         
         $gd = 'gd1';
-        $consulta = $conn->prepare("SELECT * FROM $gd limit 1;") ;
+        $consulta = $conn->prepare("SELECT * FROM $gd where idusr is NULL limit 1;") ;
         $consulta->execute();
         $resultado = $consulta->fetch();
         $ncap = $resultado['ncap'];

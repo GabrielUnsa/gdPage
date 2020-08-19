@@ -3,6 +3,7 @@ body{
     padding:0;
     font-family: 'Spectral', serif;
     text-align: center;
+    font-weight: 501;
 }
 
 /* Login Input */
@@ -45,4 +46,141 @@ header{
 header a{
     text-decoration: none;
     color: #333;
+    font-weight: bold;
+    font-size: 28px;
+}
+
+.b1{
+    text-decoration: none;
+    padding: 10px;
+    color: #fff;
+    background: #0a912b;
+    width: 320px;
+    margin: 60px;
+    margin-top: 0;
+    border: 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+}
+.b1:hover{
+    background-color: #15b93e;
+}
+
+.b2{
+    text-decoration: none;
+    padding: 10px;
+    color: #fff;
+    background: #1347b6;
+    width: 320px;
+    margin: 40px;
+    margin-top: 0;
+    border: 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+}
+.b2:hover{
+    background-color: #285fd6;
+}
+
+.b3{
+    text-decoration: none;
+    padding: 10px;
+    color: #fff;
+    background: #c92727;
+    width: 320px;
+    margin: 30px;
+    margin-top: 0;
+    border: 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+}
+.b3:hover{
+    background-color: #f03636;
+}
+
+.welcome{
+    text-decoration: none;
+    color: #333;
+    font-weight: 501;
+    font-size: xx-large;
+    font-family: "Cambria";
+}
+
+.selects{
+    outline: none;
+    padding: 8px;
+    display: inline-block;
+    border-radius: 3px;
+    border: 1px solid rgb(68, 67, 67);
+    margin: 20px auto;
+}
+
+.labels{
+    text-decoration: none;
+    color: #333;
+    font-weight: 501;
+    font-size: 20px;
+    font-family: "Arial";
+}
+
+.b3v{
+    text-decoration: none;
+    padding: 10px;
+    color: #fff;
+    background: #c92727;
+    width: 320px;
+    margin: 20px;
+    margin-top: 0;
+    border: 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+}
+.b3v:hover{
+    background-color: #f03636;
+}
+
+.b2v{
+    text-decoration: none;
+    padding: 10px;
+    color: #fff;
+    background: #1347b6;
+    width: 320px;
+    margin: 20px;
+    margin-top: 0;
+    border: 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 20px;
+}
+.b2v:hover{
+    background-color: #285fd6;
+}
+
+.b1v{
+    text-decoration: none;
+    padding: 10px;
+    color: #fff;
+    background: #0a912b;
+    width: 320px;
+    margin: 20px;
+    margin-top: 0;
+    border: 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 20px;
+}
+.b1v:hover{
+    background-color: #15b93e;
+}
+
+.letsgo{
+    text-decoration: none;
+    color: #333;
+    font-weight: 501;
+    font-size: xx-large;
+    font-family: "Cambria";
 }

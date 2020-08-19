@@ -1,3 +1,20 @@
+<?php
+    session_start();
+    require 'database.php';
+
+    if( isset($_SESSION['user_id']) ){
+        $records = $conn->prepare('SELECT idusr, nickname, nombre, apellido, password FROM users WHERE idusr = :idusr');
+        $records->bindParam(':idusr', $_SESSION['user_id']);
+        $records->execute();
+        $results = $records->fetch();
+        $user = null;
+        if( count($results) > 0 ){
+            $user = $results;
+        }
+    }
+?>
+
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -11,8 +28,21 @@
     <link href="assets/css/style.css" rel="stylesheet">
 </head>
 <body>
-    <a href="sCorg.php"> Seguir Corrigiendo </a>
+    <?php if( !empty( $user ) ): ?>
+        <p class = 'welcome'> Bienvenido! </p>
+        <p class = 'welcome'> <?= $user['nombre'] ?> <?= $user['apellido']?> </p>
+        <p class = 'welcome'> Sigamos trabajando! </p>
+        <br>
+    
+    <?php endif;?>
+    <a class = 'b1' href="sCorg.php"> Seguir Corrigiendo </a> 
+    <a class = 'b2' href="mCorg.php"> Modificar Correccion </a>
     <br>
-    <a href="mCorg.php"> Modificar Correccion </a>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <a class = 'b3' href="logout.php"> Salir </a>
 </body>
 </html>

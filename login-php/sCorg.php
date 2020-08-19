@@ -23,16 +23,11 @@
     <title>Seleccion GD</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <?php require 'partials/header.php' ?>
-    <?php if( !empty( $user ) ): ?>
-        <br> Bienvenido!
-        <br> <?= $user['nombre'] ?> <?= $user['apellido']?>
-        <br> Sigamos trabajando! 
-        <br>
-    <?php endif;?>
 </head>
 <body>
-<label> Elija un guemes documentado:</label>
-        <select id = 'GD' name = "GD">
+<p class = 'letsgo'> Sigamos! </p>
+<label class = 'labels'> Elija un guemes documentado:</label>
+        <select class = 'selects' id = 'GD' name = "GD" >
             <option value = gd1> 1 </option>
             <option value = gd2> 2 </option>
             <option value = gd3> 3 </option>
@@ -48,6 +43,13 @@
         </select>
         <br>
         <div id = "list"> </div>
+        <br>
+        <br>
+        <br>
+    <a class = 'b3v' href = "logout.php"> Salir </a>
+    <a class = 'b2v' href = "selCorg.php"> Volver </a>
+    <a class = 'b1v' href = "corregir.php">  Siguiente </a> 
+    
 </body>
 </html>
 
