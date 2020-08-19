@@ -35,8 +35,8 @@
         <br>
     
     <?php endif;?>
-    <a class = 'b1' href="sCorg.php"> Seguir Corrigiendo </a> 
-    <a class = 'b2' href="mCorg.php"> Modificar Correccion </a>
+    <a class = 'b1' href="seguir.php"> Seguir Corrigiendo </a> 
+    <a class = 'b2' href="modificar.php"> Modificar Correccion </a>
     <br>
     <br>
     <br>

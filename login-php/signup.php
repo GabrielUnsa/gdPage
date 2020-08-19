@@ -23,13 +23,13 @@
                         $stmt -> bindParam( ':nickname', $_POST['nickname'] );
                         $stmt -> bindParam( ':password', $password );
                         if ( $stmt -> execute() ){
-                            $msg = 'New User Added';
+                            $msg = 'Nuevo usuario Agregado';
                         }else{
-                            $msg = 'NOT';
+                            $msg = 'No se pudo agregar su usuario, por favor intente mas tarde';
                         }
                     }catch(PDOException $e){
                         print 'ERROR: '.$e->getMessage();
-                        print '<br/>Data Not Inserted';
+                        print '<br/> Error intente mas tarde';
                     }
                 }else{
                     $msg = 'No coinciden las contraseñas ingresadas';

@@ -25,9 +25,9 @@
     <?php require 'partials/header.php' ?>
 </head>
 <body>
-<p class = 'letsgo'> Sigamos! </p>
+<p class = 'letsgo'> Modifiquemos! </p>
 <label class = 'labels'> Elija un guemes documentado:</label>
-        <select class = 'selects' id = 'GD' name = "GD" >
+        <select class = 'selects' id = 'GD' name = "GD">
             <option value = gd1> 1 </option>
             <option value = gd2> 2 </option>
             <option value = gd3> 3 </option>
@@ -42,22 +42,36 @@
             <option value = gd12> 12 </option>
         </select>
         <br>
-        <div id = "list"> </div>
+        <label class = 'labels'> Numero de Capitulo: </label>
+        <select class = 'selects' id='ncap' name='ncap'> </select>
+        <br>
+        <label class = 'labels'> Numero de Pagina: </label>
+        <select class = 'selects' id='npag' name='npag'> </select>
+        <br>
+        <label class = 'labels'> Numero de Linea: </label>
+        <select class = 'selects' id='nline' name='nline'> </select>
+        <br>
         <br>
         <br>
         <br>
     <a class = 'b3v' href = "logout.php"> Salir </a>
-    <a class = 'b2v' href = "selCorg.php"> Volver </a>
+    <a class = 'b2v' href = "seleccion.php"> Volver </a>
     <a class = 'b1v' href = "corregir.php">  Siguiente </a> 
-    
 </body>
 </html>
 
 <script type = "text/javascript">
     $(document).ready(function(){
         recargarLista();
+        listpag();
         $('#GD').click(function(){
             recargarLista();
+        });
+        $('#ncap').click(function(){
+            listpag();
+        });
+        $('#npag').click(function () {
+            listline();
         });
     })
 </script>
@@ -66,10 +80,36 @@
     function recargarLista(){
         $.ajax({
             type: "POST",
-            url: "cAll.php",
+            url: "carga/cargaCap.php",
             data: "guemes=" + $('#GD').val(),
             success:function(r){
-                $('#list').html(r)
+                $('#ncap').html(r)
+            }
+        });
+    }
+</script>
+
+<script type = "text/javascript">
+    function listpag(){
+        $.ajax({
+            type: "POST",
+            url: "carga/cargaPag.php",
+            data: { "guemes": $('#GD').val(), "cap": $('#ncap').val()},
+            success:function(r){
+                $('#npag').html(r)
+            }
+        });
+    }
+</script>
+
+<script type = "text/javascript">
+    function listline(){
+        $.ajax({
+            type: "POST",
+            url: "carga/cargaLine.php",
+            data: { "guemes": $('#GD').val(), "cap": $('#ncap').val(), "pag":$('#npag').val()},
+            success:function(p){
+                $('#nline').html(p)
             }
         });
     }

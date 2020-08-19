@@ -13,7 +13,7 @@
         $msg = '';
         if( Count($results) > 0 && password_verify( $_POST['password'], $results['password'] ) ){
             $_SESSION['user_id'] = $results['idusr'];
-            header("Location: /login-php/selCorg.php"); #redireccionamiento
+            header("Location: /login-php/seleccion.php"); #redireccionamiento
         }
         else{
             $msg = 'No existe el usuario o la contraseña es incorrecta';
