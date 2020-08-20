@@ -12,7 +12,10 @@
             $user = $results;
         }
     }
-?>
+    ?>
+
+
+
 
 <!DOCTYPE html>
 <html lang="es">
@@ -33,33 +36,46 @@
 
         <?php 
         
-        $gd = 'gd1';
-        $consulta = $conn->prepare("SELECT * FROM $gd where idusr is NULL limit 1;") ;
-        $consulta->execute();
-        $resultado = $consulta->fetch();
-        $ncap = $resultado['ncap'];
-        $npag = $resultado['npag'];
-        $nlinea = $resultado['nlinea'];
-        $tcorrg = $resultado['tocr'];
+/*         print_r($_POST);
+        $ncap = $_POST['ncap'];
+        $npag = $_POST['npag'];
+        $nlinea = $_POST['nlinea'];
+        $guemes = 'gd1';
+        $sql = "SELECT tocr FROM {$guemes} WHERE 
+        ncap = :ncap AND npag = :npag AND nlinea = :nlinea" ;
+        $stmt = $conn->prepare($sql);
+        $stmt -> bindParam( ':ncap', $ncap );
+        $stmt -> bindParam( ':npag', $npag );
+        $stmt -> bindParam( ':nlinea', $nlinea );$
+        $resultado = $stmt->fetch();
+        $tcorrg = $resultado['tocr']; */
+        $records = $conn->prepare("SELECT * FROM gd1 WHERE idusr IS NULL LIMIT 1");
+        $records->execute();
+        $results = $records->fetch();
+        $ncap = $results['ncap'];
+        $npag = $results['npag'];
+        $nlinea = $results['nlinea'];
+        $tocr = $results['tocr'];
+        // print_r ($results);
         echo "
-            <form action='update.php' method='POST' target='_blank'>   
-            <label for=''>Tomo: </label>
-            <input type='text', disabled='true', value=".$ncap.">
-            <br>
+            <form action='update.php' method='POST'>   
             <label for=''>Capítulo: </label>
-            <input type='text', disabled='true', value=".$npag.">
+            <input type='text', name ='ncap', id ='ncap', value=".$ncap.">
             <br>
             <label for=''>Página: </label>
-            <input type='text', disabled='true', value=".$nlinea.">
+            <input type='text',name ='npag', id ='npag', value=".$npag.">
             <br>
-            <label for=''>Línea corregida: </label>
+            <label for=''>Número de línea: </label>
+            <input type='text',name ='nlinea',id ='nlinea', value=".$nlinea.">
+            <br>
+            <label for=''>Línea original: </label>
             
-            <p><textarea name='tcorrg', disabled='true'> ".$tcorrg."</textarea> </p>
-            <label for=''>Modificar : </label>
+            <textarea name='tocr', disabled='true'> ".$tocr."</textarea>
+            <label for=''>Línea a corregir : </label>
 
-            <textarea name='tmod',rows='5',cols='100'> ".$tcorrg."</textarea> 
+            <textarea name='tcorrg', id='tcorrg'> ".$tocr."</textarea> 
             <br>
-            <input type='submit' value='Siguiente'>
+            <input type='submit', name='siguiente', id='siguiente',value='Siguiente'>
             </form>   
             ";
             //print_r ($resultado);
