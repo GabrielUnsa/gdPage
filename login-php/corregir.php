@@ -35,8 +35,8 @@
         <h1>Revisar Corrección</h1>
 
         <?php 
-        
-/*         print_r($_POST);
+        print_r($_POST);
+/*         
         $ncap = $_POST['ncap'];
         $npag = $_POST['npag'];
         $nlinea = $_POST['nlinea'];
@@ -55,11 +55,14 @@
         $ncap = $results['ncap'];
         $npag = $results['npag'];
         $nlinea = $results['nlinea'];
-        $tocr = $results['tocr'];
-        // print_r ($results);
-        echo "
-            <form action='update.php' method='POST'>   
-            <label for=''>Capítulo: </label>
+        $tocr = $results['tocr'];  // print_r ($results); ?>
+        
+        
+            <!--    -->
+            
+            <?php
+            echo " <form id = form> 
+            <label for=''>Capítulo: </label>  
             <input type='text', name ='ncap', id ='ncap', value=".$ncap.">
             <br>
             <label for=''>Página: </label>
@@ -76,7 +79,7 @@
             <textarea name='tcorrg', id='tcorrg'> ".$tocr."</textarea> 
             <br>
             <input type='submit', name='siguiente', id='siguiente',value='Siguiente'>
-            </form>   
+             </form>
             ";
             //print_r ($resultado);
             
@@ -87,6 +90,7 @@
         
         <script type="text/javascript" src="js/index.js"></script>
         <br>
+        <a href="seleccion.php"> Volver</a>
         <a href="logout.php"> Salir</a>
     <?php endif;?>
 </head>
@@ -94,3 +98,32 @@
     
 </body>
 </html>
+
+<script type = "text/javascript">
+    $(document).ready(function(){
+        recargarLista();
+        $('#siguiente').click(function(){
+            recargarLista();
+        });
+    })
+</script>
+
+<script type = "text/javascript">
+    function recargarLista(){
+
+        $.ajax({
+            type: "POST",
+            url: "update.php",
+            //url: $(this).attr('action'),
+            data: $(this).serialize(),
+            //data: { "ncap": $('#ncap').val(), "npag":$('#npag').val(), "nlinea":$('#nlinea').val()},
+            success:function(r){
+               // $('#list').html(r)
+               alert('AJAX call was successful!');
+            },
+            error: function() {
+                alert('There was some error performing the AJAX call!');
+            }
+        });
+    }
+</script>

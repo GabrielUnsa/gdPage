@@ -13,24 +13,25 @@
         }
     }
     //update gd1 set tocr=' PAPELES QUE A LA MUERTE DE GÜEMES', tcorrg='hola' 
-    //where ncap=1 and npag = 11 and nlinea=1 
-     if( isset($_POST['siguiente']) ){
-        //print_r($_POST);
-        $ncap = $_POST['ncap'];
-/*         $npag = $_POST['npag'];
-        $nlinea = $_POST['nlinea']; */
-        $tcorrg = $_POST['tcorrg']; 
-        $npag = 11;
-        $nlinea = 1;
+    //where ncap=1 and npag = 11 and nlinea=1  fcorrg= 'SELECT CURRENT_TIMESTAMP();',
+    // if( isset($_POST['siguiente']) ){
+        //
+/*         $ncap = $_POST['ncap'];
+        $npag = $_POST['npag'];
+        $nlinea = $_POST['nlinea']; 
+        $tcorrg = $_POST['tcorrg']; */ 
+/*         $npag = 11;
+        $nlinea = 1; */
+        print_r($_POST);
             if( !empty($tcorrg) ){
                 
-                $sql = "UPDATE gd1 SET tcorrg = :tcorrg, idusr = :idusr WHERE ncap= :ncap and npag = :npag and nlinea= :nlinea";
+                $sql = "UPDATE gd1 SET tcorrg = :tcorrg,  idusr = :idusr WHERE ncap= :ncap and npag = :npag and nlinea= :nlinea";
                 $stmt = $conn -> prepare($sql);
                 $stmt -> bindParam( ':tcorrg',  $_POST['tcorrg'] );
-                $stmt -> bindParam( ':idusr', $_POST['idusr'] );
-                $stmt -> bindParam( ':ncap', $ncap );
-                $stmt -> bindParam( ':npag', $pag );
-                $stmt -> bindParam( ':nlinea', $nlinea );
+                $stmt -> bindParam( ':idusr', $_SESSION['user_id']);
+                $stmt -> bindParam( ':ncap', $_POST['ncap'] );
+                $stmt -> bindParam( ':npag', $_POST['npag'] );
+                $stmt -> bindParam( ':nlinea', $_POST['nlinea'] ); 
         
                 $stmt -> execute(); 
                 $results = $stmt->fetch();
@@ -41,5 +42,5 @@
 
             }
                                    
-    } 
+    //} 
 ?>
