@@ -195,12 +195,13 @@ textarea{
     border: 1px solid #eee;
     margin: 20px auto;
 }
-.copiarTocr{
+
+.copiar{
     text-decoration: none;
     padding: 10px;
     color: #fff;
     background: #808586;
-    width: 100px;
+    width: 200px;
     margin: 60px;
     margin-top: 0;
     border: 20px;
@@ -208,22 +209,6 @@ textarea{
     cursor: pointer;
     font-size: 18px;
 }
-.copiarTocr:hover{
-    background-color: #9EA4A5;
-}
-.copiarTsug{
-    text-decoration: none;
-    padding: 10px;
-    color: #fff;
-    background: #808586;
-    width: 100px;
-    margin: 60px;
-    margin-top: 0;
-    border: 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 18px;
-}
-.copiarTsug:hover{
+.copiar:hover{
     background-color: #9EA4A5;
 }
