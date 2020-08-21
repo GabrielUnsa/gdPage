@@ -25,6 +25,9 @@
     <link href="assets/css/style.css" rel="stylesheet">
     <title>Seleccion GD</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<body> 
     <?php require 'partials/header.php' ?>
     <?php if( !empty( $user ) ): ?>
         <br> Bienvenido!
@@ -58,43 +61,49 @@
         $tocr = $results['tocr'];  // print_r ($results); ?>
         
         
-            <!--    -->
-            
-            <?php
-            echo " <form id = form> 
+        <form id = form method = "POST " action=""> 
             <label for=''>Capítulo: </label>  
-            <input type='text', name ='ncap', id ='ncap', value=".$ncap.">
+            <input type="text" name ='ncap' id ='ncap' value=" <?php  echo $ncap; ?> ">
             <br>
             <label for=''>Página: </label>
-            <input type='text',name ='npag', id ='npag', value=".$npag.">
+            <input type="text" name ='npag' id ='npag' value="<?php  echo $npag; ?>">
             <br>
             <label for=''>Número de línea: </label>
-            <input type='text',name ='nlinea',id ='nlinea', value=".$nlinea.">
+            <input type="text" name ='nlinea' id ='nlinea' value="<?php  echo $nlinea; ?>">
             <br>
-            <label for=''>Línea original: </label>
-            
-            <textarea name='tocr', disabled='true'> ".$tocr."</textarea>
-            <label for=''>Línea a corregir : </label>
 
-            <textarea name='tcorrg', id='tcorrg'> ".$tocr."</textarea> 
+            <label for=''>Línea original: </label> 
+            <textarea name='tocr' disabled='true'> "<?php  echo $tocr; ?>"</textarea>
+            <input class = "copiarTocr" type="button" id="copiarTocr" value="Copiar" />
+            
+            <br>
+            <label for=''>Línea sugerida: </label> <br>
+            <textarea name='tsug' disabled='true'> "<?php  echo $tocr; ?>"</textarea>
+            <input class = "copiarTsug" type="button" id="copiarTsug" value="Copiar" />
+            <br>
+
+            <label for=''>Línea a corregir : </label>
+            <textarea name='tcorrg', id='tcorrg'> </textarea> 
             <br>
             <input type='submit', name='siguiente', id='siguiente',value='Siguiente'>
-             </form>
-            ";
-            //print_r ($resultado);
-            
-
-        ?>
-        
-        </div>
+         </form>
         
         <script type="text/javascript" src="js/index.js"></script>
         <br>
         <a href="seleccion.php"> Volver</a>
         <a href="logout.php"> Salir</a>
     <?php endif;?>
-</head>
-<body>
+
+    <script type="text/javascript">
+        var button = document.getElementById("copiarTocr"),
+            input = document.getElementById("tocr");
+
+        button.addEventListener("click", function(event) {
+            event.preventDefault();lo
+            input.select();
+            document.execCommand("copy");
+        });
+    </script>
     
 </body>
 </html>
