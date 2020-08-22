@@ -44,3 +44,7 @@
                                    
     //} 
 ?>
+<script type = "text/javascript">
+            alert("Linea guardada");
+            window.location.href = 'corregir.php';
+</script>

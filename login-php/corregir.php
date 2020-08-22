@@ -61,7 +61,7 @@
         $tocr = $results['tocr'];  // print_r ($results); ?>
         
         
-        <form id = form method = "POST " action=""> 
+        <form id = "FORM" method = "POST" action="update.php"> 
             <label for=''>Capítulo: </label>  
             <input type="text" name ='ncap' id ='ncap' disabled='true' value=" <?php  echo $ncap; ?> ">
             <br>
@@ -86,7 +86,7 @@
             <textarea name='tcorrg' id="tcorrg" > </textarea>
 
             <br>
-            <input type='submit', name='siguiente', id='siguiente',value='Siguiente'>
+            <input type='submit' name='siguiente' id='siguiente' value='Siguiente'>
          </form>
         
         <script type="text/javascript" src="js/index.js"></script>
