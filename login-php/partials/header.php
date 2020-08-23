@@ -1,3 +1,3 @@
 <header>
-    <a href="/login-php/"> GD - Ground truth </a>
+    <a href="/login-php/seleccion.php"> GD - Ground truth </a>
 </header>

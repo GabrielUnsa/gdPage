@@ -14,9 +14,6 @@
     }
     ?>
 
-
-
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -32,15 +29,17 @@
     <?php if( !empty( $user ) ): ?>
         <div>
         <h1>Revisar Corrección</h1>
-
         <?php 
-        $records = $conn->prepare("SELECT ncap, npag, nline, tocr FROM gd1 WHERE idusr IS NULL LIMIT 1");
+        $records = $conn->prepare("SELECT tocr FROM {$_POST['GD']} WHERE ncap = :ncap AND npag = :npag AND nline = :nline");
+        $records->bindParam(':ncap', $_POST['ncap']);
+        $records->bindParam(':npag', $_POST['npag']);
+        $records->bindParam(':nline', $_POST['nline']);
         $records->execute();
         $results = $records->fetch();
-        $ncap = $results[0];
-        $npag = $results[1];
-        $nlinea = $results[2];
-        $tocr = $results[3]; ?>
+        $ncap = $_POST['ncap'];
+        $npag = $_POST['npag'];
+        $nline = $_POST['nline'];
+        $tocr = $results[0]; ?>
         
         
         <form id = "FORM" method = "POST" action="update.php"> 
@@ -49,10 +48,10 @@
             <input type="text" name ='ncap' id ='ncap' readonly='true' value=" <?php  echo $ncap; ?> ">
             <br>
             <label for=''>Página: </label>
-            <input type="text" name ='npag' id ='npag' readonly='true' value="<?php  echo $npag; ?>">
+            <input type="text" name ='npag' id ='npag' readonly='true' value="<?php  echo  $npag; ?>">
             <br>
             <label for=''>Número de línea: </label>
-            <input type="text" name ='nlinea' id ='nlinea' readonly='true' value="<?php  echo $nlinea; ?>">
+            <input type="text" name ='nlinea' id ='nlinea' readonly='true' value="<?php  echo $nline; ?>">
             <br>
 
             <label for=''>Línea original: </label> 

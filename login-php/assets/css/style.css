@@ -135,9 +135,9 @@ header a{
     margin: 20px;
     margin-top: 0;
     border: 20px;
-    border-radius: 5px;
+    border-radius: 3px;
     cursor: pointer;
-    font-size: 18px;
+
 }
 .b3v:hover{
     background-color: #f03636;
@@ -152,9 +152,9 @@ header a{
     margin: 20px;
     margin-top: 0;
     border: 20px;
-    border-radius: 5px;
+    border-radius: 3px;
     cursor: pointer;
-    font-size: 20px;
+
 }
 .b2v:hover{
     background-color: #285fd6;
@@ -169,9 +169,9 @@ header a{
     margin: 20px;
     margin-top: 0;
     border: 20px;
-    border-radius: 5px;
+    border-radius: 3px;
     cursor: pointer;
-    font-size: 20px;
+
 }
 .b1v:hover{
     background-color: #15b93e;
