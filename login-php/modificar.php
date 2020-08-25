@@ -26,7 +26,7 @@
 </head>
 <body>
 <p class = 'letsgo'> Modifiquemos! </p>
-<form action='corregir.php' method='POST'>
+<form action='corregirMod.php' method='POST'>
     <label class = 'labels'> Elija un guemes documentado:</label>
             <select class = 'selects' id = 'GD' name = "GD">
                 <option value = gd1> 1 </option>
@@ -52,7 +52,7 @@
             <label class = 'labels'> Numero de Linea: </label>
             <select class = 'selects' id='nline' name='nline'> </select>
             <br>
-    <input  href = 'corregir.php' type = 'submit' value = Siguiente >    
+    <input  id = "modificar" href = 'corregirMod.php' type = 'submit' value = Siguiente >    
 </form>
     <br>
     <br>
