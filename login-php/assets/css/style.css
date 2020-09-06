@@ -212,3 +212,121 @@ textarea{
 .copiar:hover{
     background-color: #9EA4A5;
 }
+.textline{
+    outline: none;
+    padding: 10px;
+    display: block;
+    width: 500px;
+    height: 20px;
+    border-radius: 5px;
+    border: 1px solid #eee;
+    margin: 10px auto;
+}
+
+.container {
+    width: 100%;
+    padding-right: 0.75rem;
+    padding-left: 0.75rem;
+    margin-right: auto;
+    margin-left: auto;
+  }
+  @media (min-width: 576px) {
+    .container {
+      max-width: 540px;
+    }
+  }
+  @media (min-width: 768px) {
+    .container {
+      max-width: 720px;
+    }
+  }
+  @media (min-width: 992px) {
+    .container {
+      max-width: 960px;
+    }
+  }
+  @media (min-width: 1200px) {
+    .container {
+      max-width: 1140px;
+    }
+  }
+  
+  .container-fluid, .container-xl, .container-lg, .container-md, .container-sm {
+    width: 100%;
+    padding-right: 0.75rem;
+    padding-left: 0.75rem;
+    margin-right: auto;
+    margin-left: auto;
+  }
+  
+  @media (min-width: 576px) {
+    .container-sm, .container {
+      max-width: 540px;
+    }
+  }
+  @media (min-width: 768px) {
+    .container-md, .container-sm, .container {
+      max-width: 720px;
+    }
+  }
+  @media (min-width: 992px) {
+    .container-lg, .container-md, .container-sm, .container {
+      max-width: 960px;
+    }
+  }
+  @media (min-width: 1200px) {
+    .container-xl, .container-lg, .container-md, .container-sm, .container {
+      max-width: 1140px;
+    }
+  }
+
+  html,body{margin:0;padding:0}
+body{font: 76% arial,sans-serif;text-align:center}
+p{margin:0 10px 10px}
+div#header{
+  background-color:#0098cb;
+}
+div#header h1{
+  height:50px;
+  line-height:50px;
+  margin:0;
+  padding-left:10px;
+}
+div#container{
+  text-align:left;
+  width:800px;
+  height:450px;
+  margin: 0 auto;
+}
+div#content{
+  float:right;
+  width:570px;
+  background-color: rgb(224, 235, 247);
+  padding: 15px;
+  margin-top: 10px;
+}
+div#content p{
+  line-height:1.4
+}
+div#navigation{
+  /* background:#a3cce6; */
+  background-color: rgb(224, 235, 247);
+  float:left;
+  width:210px;
+  height:200px;line-height:30px;margin-top:10px;padding-left:10px;
+}
+
+
+div#footer{
+  /* background:#0098cb; */
+  clear:both;
+  width:100%
+}
+div#footer p{
+  margin:20px;padding:30px 10px;
+  text-align: center;
+
+}
+
+
+

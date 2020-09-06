@@ -20,6 +20,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="assets/css/style.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<!--     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" crossorigin="anonymous"></script>
+    <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
+ -->
     <title>Correcion GD</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
@@ -27,8 +32,8 @@
 <body> 
     <?php require 'partials/header.php' ?>
     
-        <div>
-        <h1>Revisar Corrección</h1>
+
+        
     <?php 
     $gd = $_POST['GD'];
 
@@ -73,45 +78,69 @@
         //print_r($_POST); 
         ?>
         
-        
-        <form id = "FORM" method = "POST" action=""> 
-            <label for=''>Guemes Documentado: </label>  
-            <input type="text" name ='GD' id ='GD' readonly='true' value=" <?php  echo $_POST['GD']; ?> ">
+     <div id = "container">
+         <form id = "FORM" method = "POST" action=""> 
+         <div id="header"><h1>Revisar Corrección</h1></div>
+            <div id="navigation">
+            <p><strong>Ubicación</strong></p>
+            <label for=''>Guemes Documentado: <?php  echo substr($_POST['GD'],-1,1); ?> </label>  
+                <br>
+
+            <label for=''>Capítulo: <?php  echo $ncap; ?> </label>  
             <br>
 
-            <label for=''>Capítulo: </label>  
-            <input type="text" name ='ncap' id ='ncap' readonly='true' value=" <?php  echo $ncap; ?> ">
+            <label for=''>Página: <?php  echo  $npag; ?> </label>
             <br>
 
-            <label for=''>Página: </label>
-            <input type="text" name ='npag' id ='npag' readonly='true' value="<?php  echo  $npag; ?>">
+            <label for=''>Número de línea: <?php  echo $nline; ?> </label>
             <br>
+            </div>
 
-            <label for=''>Número de línea: </label>
-            <input type="text" name ='nline' id ='nline' readonly='true' value="<?php  echo $nline; ?>">
-            <br>
-
+        <div id="wrapper">
+            <div id="content">
             <label for=''>Línea original: </label> 
-            <textarea name='tocr' id="tocr" disabled ='true'> "<?php  echo $tocr; ?>"</textarea>
-            <input class = "copiar" type="button" id="copiarTocr" value="Copiar para editar" onclick="copy()" />
-            <br>
+        <div vlass="input-group">
+        <input class="textline"  maxname='tocr' id="tocr" disabled ='true' value= '<?php  echo $tocr; ?>' />
+        <div class="input-group-append">
+        <button type="button" class="btn btn-default btn-sm" onclick="copy()">
+            <span class="glyphicon glyphicon-copy"></span> Copiar 
+        </button>
+        </div>
+        </div>
 
-            <label for=''>Línea sugerida: </label> <br>
-            <textarea name='tsug' id="tsug" disabled='true'> "<?php  echo $tocr; ?>"</textarea>
-            <input class = "copiar" type="button" id="copiarTsug" value="Copiar para editar" onclick="copy2()" />
-            <br>
+        <!-- <input class = "copiar" maxlenght="500" type="button" id="copiarTocr" value="Copiar para editar" onclick="copy()" /> -->
+        <br>
+        
+        <label for=''>Línea sugerida: </label> <br>
+        <input class="textline" maxlenght="500" name='tsug' id="tsug" disabled ='true' value='<?php  echo $tocr; ?>' />
+        <button type="button" class="btn btn-default btn-sm" onclick="copy2()">
+            <span class="glyphicon glyphicon-copy"></span> Copiar 
+        </button>
+        <!-- <input class = "copiar" type="button" id="copiarTsug" value="Copiar para editar" onclick="copy2()" /> -->
+        <br>
 
-            <label for=''>Línea a corregir : </label>
-            <p><textarea name='tcorrg' id="tcorrg" required = "true" ></textarea></p>
-            
+        <label for=''>Línea a corregir : </label>
+        <input class="textline" name='tcorrg' id="tcorrg" required = "true" >
 
             <br>
             <input type='submit' name='guardar' id='guardar' value='Guardar'>
          </form>
         <br>
+
+        </div>
+  </div>
+
+
+  <div id="footer">
+    <p>        
         <a class = b2v href="seleccion.php"> Volver</a>
         <a class = b3v href="logout.php"> Salir</a>
-        <br>
+        <br></p>
+  </div>
+</div>
+     </div>   
+
+
     
     <script type="text/javascript">
         function copy() {
