@@ -38,7 +38,7 @@
         date_default_timezone_set("America/Argentina/Salta");
         $fecha = date('Y-m-d H:i:s', time());
         
-        $sql = "UPDATE {$gd} SET tcorrg = :tcorrg, fcorrg = :fcorrg, idusr = :idusr WHERE ncap= :ncap and npag = :npag and nline= :nline";
+        $sql = "UPDATE {$_POST['GD']} SET tcorrg = :tcorrg, fcorrg = :fcorrg, idusr = :idusr WHERE ncap= :ncap and npag = :npag and nline= :nline";
         $stmt = $conn -> prepare($sql);
         $stmt -> bindParam( ':tcorrg',  $_POST['tcorrg'] );
         $stmt -> bindParam( ':idusr', $_SESSION['user_id']);
@@ -47,7 +47,7 @@
         $stmt -> bindParam( ':nline', $_POST['nline'] ); 
         $stmt -> bindParam( ':fcorrg', $fecha ); 
         $stmt -> execute(); 
-        $records = $conn->prepare("SELECT ncap, npag, nline FROM {$gd} WHERE idusr IS NULL LIMIT 1");
+        $records = $conn->prepare("SELECT ncap, npag, nline FROM {$_POST['GD']} WHERE idusr IS NULL LIMIT 1");
         $records->execute();
         $results = $records->fetch();
         $_POST['ncap'] = $results['ncap'];
@@ -110,13 +110,14 @@
             $nline = $_POST['nline'];
             $id = $results[0]; 
             $id = $id -1;
+
             $records = $conn->prepare("SELECT tocr,ncap,npag,nline FROM {$_POST['GD']} WHERE  id = :id");
-            $records->bindParam(':id', $_POST['id']);
+            $records->bindParam(':id', $id);
             $records->execute();
             $results = $records->fetch();
-            $ncap = $results[1];
-            $npag = $results[2];
-            $nline = $results[3];
+            $ncap = $results[1]; $_POST['ncap']=$results[1];
+            $npag = $results[2]; $_POST['npag'] = $results[2];
+            $nline = $results[3]; $_POST['nline'] = $results[3];
             $tocr = $results[0];
         } else{
             echo '<script language="javascript">';
@@ -137,7 +138,7 @@
         $ncap = $_POST['ncap'];
         $npag = $_POST['npag'];
         $nline = $_POST['nline'];
-        $gd = $_POST['GD'];
+        //$gd = $_POST['GD'];
         $tocr = $results[0]; 
         //print_r($_POST); 
         ?>
@@ -147,7 +148,7 @@
             
             <div id="navigation">
                 <p><strong>Ubicación</strong></p>
-                <label for=''>Guemes Documentado: <?php  echo substr($_POST['GD'],-1,1); ?> </label>
+                <label for=''>Guemes Documentado: <?php  $res = intval(preg_replace('/[^0-9]+/', '', $gd), 10);  echo $res;?> </label>
                 <input type="text" name ='GD' id ='GD' readonly='true' style="display:none" value=" <?php  echo $gd; ?> ">
                 <br>
 
@@ -196,9 +197,10 @@
 
         <div id="footer">
             <p>
-
-                <a class=b2v href="seleccion.php"> Volver</a>
+            
                 <a class=b3v href="logout.php"> Salir</a>
+                <a class=b2v href="seleccion.php"> Volver</a>
+
                 <br>
             </p>
     </div>

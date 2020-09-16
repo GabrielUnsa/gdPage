@@ -54,7 +54,7 @@
 
         
     }
-    if(isset($_POST['siguiente']) ){
+/*     if(isset($_POST['siguiente']) ){
         $records = $conn->prepare("SELECT nline FROM gd1 WHERE ncap = :ncap  and npag = :npag ORDER BY nline desc LIMIT 1");
         $records -> bindParam( ':ncap' ,$_POST['ncap']);
         $records -> bindParam(':npag', $_POST['npag']);
@@ -89,7 +89,7 @@
             echo '</script>';
             }
         
-    }
+    } */
     if(isset($_POST['anterior']) ){      
         if ($_POST['nline'] > 1 ){
             $records = $conn->prepare("SELECT id FROM {$_POST['GD']} WHERE ncap = :ncap AND npag = :npag AND nline = :nline");
@@ -110,8 +110,8 @@
             $results = $records->fetch();
             //print_r($results);
             $ncap = $results[1]; $_POST['ncap']=$results[1];
-            $npag = $results[2];$_POST['npag'] = $results[2];$_POST['nline'] = $results[3];
-            $nline = $results[3];
+            $npag = $results[2]; $_POST['npag'] = $results[2];
+            $nline = $results[3]; $_POST['nline'] = $results[3];
             $tocr = $results[0];
         }
         else{
@@ -138,14 +138,20 @@
         $tocr = $results[0]; 
         //print_r($_POST); 
         ?>
-        
+
+<?
+ function separa_nro($gd){
+     if (strlen($gd) == 3) echo substr($gd,-1,1);
+     else echo substr($gd,-2,2);
+    }
+ ?>
      <div id = "container">
          <form id = "FORM" method = "POST" action=""> 
          <div id="header"><h1>Revisar Corrección</h1></div>
             <div id="navigation">
             <p><strong>Ubicación</strong></p>
-            <label for=''>Guemes Documentado: <?php  echo substr($_POST['GD'],-1,1); ?> </label>
-                <input type="text" name ='GD' id ='GD' readonly='true' style="display:none" value=" <?php  echo $_POST['GD']; ?> ">
+            <label for=''>Guemes Documentado: <?php $res = intval(preg_replace('/[^0-9]+/', '', $gd), 10);  echo $res;  ?> </label>
+                <input type="text" name ='GD' id ='GD' readonly='true' style="display:none" value=" <?php  echo $gd; ?> ">
                 <br>
 
                 <label for=''>Capítulo: <?php  echo $ncap; ?> </label>
@@ -188,7 +194,7 @@
 
                     <input type='submit' name='guardar' id='guardar' value='Guardar y Volver'> 
                     <input type="submit" name="anterior" id="anterior" value="Línea Anterior">
-                    <input type="submit" name="siguiente" id="siguiente" value="Línea Siguiente">
+                    <!-- <input type="submit" name="siguiente" id="siguiente" value="Línea Siguiente"> -->
                 </div>
             </div>
         </form>
@@ -199,9 +205,10 @@
 
 
   <div id="footer">
-    <p>        
+    <p>         
+         <a class = b3v href="logout.php"> Salir</a>      
         <a class = b2v href="seleccion.php"> Volver</a>
-        <a class = b3v href="logout.php"> Salir</a>
+
         <br></p>
   </div>
 </div>
