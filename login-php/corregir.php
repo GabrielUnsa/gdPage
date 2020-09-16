@@ -12,23 +12,25 @@
             $user = $results;
         }
     }
-    ?>
+?>
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="assets/css/style.css" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-
     <title>Revisar Corrección</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 
-<body> 
+<body>
     <?php require 'partials/header.php' ?>
-    
+
+    <div id="header"> <h1>Revisar Corrección</h1> </div>
+
     <?php 
     $gd = $_POST['GD'];
 
@@ -36,7 +38,7 @@
         date_default_timezone_set("America/Argentina/Salta");
         $fecha = date('Y-m-d H:i:s', time());
         
-        $sql = "UPDATE gd1 SET tcorrg = :tcorrg, fcorrg = :fcorrg, idusr = :idusr WHERE ncap= :ncap and npag = :npag and nline= :nline";
+        $sql = "UPDATE {$gd} SET tcorrg = :tcorrg, fcorrg = :fcorrg, idusr = :idusr WHERE ncap= :ncap and npag = :npag and nline= :nline";
         $stmt = $conn -> prepare($sql);
         $stmt -> bindParam( ':tcorrg',  $_POST['tcorrg'] );
         $stmt -> bindParam( ':idusr', $_SESSION['user_id']);
@@ -51,11 +53,50 @@
         $_POST['ncap'] = $results['ncap'];
         $_POST['npag'] = $results['npag'];
         $_POST['nline'] = $results['nline'];
-        $_POST['GD'] = $gd;
-
   
     }
+    if(isset($_POST['anterior']) ){
+        if ($_POST['nline'] > 1 ){
+            $_POST['nline'] = $_POST['nline'] -1;
+            $records = $conn->prepare("SELECT tocr FROM {$_POST['GD']} WHERE ncap = :ncap AND npag = :npag AND nline = :nline");
+            $records->bindParam(':ncap', $_POST['ncap']);
+            $records->bindParam(':npag', $_POST['npag']);
+            $records->bindParam(':nline', $_POST['nline']);
+            $records->execute();
+            $results = $records->fetch();
+            $ncap = $_POST['ncap'];
+            $npag = $_POST['npag'];
+            $nline = $_POST['nline'];
+            $tocr = $results[0]; 
+        }
 
+        elseif ( $_POST['npag'] > 1 ) {
+                echo '<script language="javascript">';
+                echo 'alert("Volviendo a pagina anterior")';
+                echo '</script>';
+                $_POST['npag'] = $_POST['npag'] -1;
+                $records = $conn->prepare("SELECT max(npag) FROM {$_POST['GD']} WHERE idusr IS NOT NULL AND ncap = :ncap");
+                $records -> bindParam( ':ncap' ,$_POST['ncap']);
+                $records->execute();
+                $results = $records->fetch();
+                $_POST['nline'] = $results[0];
+                $records = $conn->prepare("SELECT tocr FROM {$_POST['GD']} WHERE ncap = :ncap AND npag = :npag AND nline = :nline");
+                $records->bindParam(':ncap', $_POST['ncap']);
+                $records->bindParam(':npag', $_POST['npag']);
+                $records->bindParam(':nline', $_POST['nline']);
+                $records->execute();
+                $results = $records->fetch();
+                $ncap = $_POST['ncap'];
+                $npag = $_POST['npag'];
+                $nline = $_POST['nline'];
+                $tocr = $results[0]; 
+            } else{
+                echo '<script language="javascript">';
+                echo 'alert("No es posible consultar")';
+                echo '</script>';
+                }
+  
+    }
 
 /*         if (is_null($_POST['GD'])){
             echo $_POST['GD'];
@@ -72,77 +113,88 @@
         $nline = $_POST['nline'];
         $tocr = $results[0]; 
         //print_r($_POST); 
-    ?>
+        ?>
 
-<div id = "container">
-         <form id = "FORM" method = "POST" action=""> 
-         <div id="header"><h1>Revisar Corrección</h1></div>
+    <div id="container">
+        <form id="FORM" method="POST" action="">
+            
             <div id="navigation">
-            <p><strong>Ubicación</strong></p>
-            <label for=''>Guemes Documentado: <?php  echo substr($_POST['GD'],-1,1); ?> </label>  
+                <p><strong>Ubicación</strong></p>
+                <label for=''>Guemes Documentado: <?php  echo substr($_POST['GD'],-1,1); ?> </label>
+                <input type="text" name ='GD' id ='GD' readonly='true' style="display:none" value=" <?php  echo $_POST['GD']; ?> ">
                 <br>
 
-            <label for=''>Capítulo: <?php  echo $ncap; ?> </label>  
-            <br>
+                <label for=''>Capítulo: <?php  echo $ncap; ?> </label>
+                <input type="text" name ='ncap' id ='ncap' readonly='true' style="display:none" value=" <?php  echo $ncap; ?> ">
+                <br>
 
-            <label for=''>Página: <?php  echo  $npag; ?> </label>
-            <br>
+                <label for=''>Página: <?php  echo  $npag; ?> </label>
+                <input type="text" name ='npag' id ='npag' readonly='true'style="display:none"  value="<?php  echo  $npag; ?>">
+                <br>
 
-            <label for=''>Número de línea: <?php  echo $nline; ?> </label>
-            <br>
+                <label for=''>Número de línea: <?php  echo $nline; ?> </label>
+                <input type="text" name ='nline' id ='nline' readonly='true'style="display:none"  value="<?php  echo $nline; ?>">
+                <br>
             </div>
 
-        <div id="wrapper">
-            <div id="content">
-                <label for=''>Línea original: </label> 
-                <div class="input-group">
-                <input class="textline"  maxname='tocr' id="tocr" disabled ='true' value= '<?php  echo $tocr; ?>' />
-                <div class="input-group-append">
-                <button type="button" class="btn btn-default btn-sm" onclick="copy()">
-                    <span class="glyphicon glyphicon-copy"></span> Copiar 
-                </button>
+            <div id="wrapper">
+                <div id="content">
+                    <label for=''>Línea original: </label>
+                    <div class="input-group">
+                        <input class="textline" maxlenght="500"name='tocr' id="tocr" disabled='true' value='<?php  echo $tocr; ?>' />
+                        <button type="button" class="btn btn-default btn-sm" onclick="copy()">
+                            <span class="glyphicon glyphicon-copy"></span> Copiar
+                        </button>
+                    </div>
+                    <br>
+
+                    <label for=''>Línea sugerida: </label> 
+                    <div class="input-group">
+                        <input class="textline" name='tsug' id="tsug" disabled='true' value='<?php  echo $tocr; ?>' />
+                        <button type="button" class="btn btn-default btn-sm" onclick="copy2()">
+                            <span class="glyphicon glyphicon-copy"></span> Copiar
+                        </button>
+                    </div>
+                    <br>
+
+                    <label for=''>Línea a corregir : </label>
+                    <input class="textline" name='tcorrg' id="tcorrg" required="true">
+                    <br>
+
+                    <input type='submit' name='guardar' id='guardar' value='Guardar'> 
+                    <input class=b2v type="submit" name="anterior" id="anterior" value="Línea Anterior">
+                </div>
             </div>
-        </div>
+        </form>
 
-        <!-- <input class = "copiar" maxlenght="500" type="button" id="copiarTocr" value="Copiar para editar" onclick="copy()" /> -->
-        <br>
-        
-        <label for=''>Línea sugerida: </label> <br>
-        <input class="textline" maxlenght="500" name='tsug' id="tsug" disabled ='true' value='<?php  echo $tocr; ?>' />
-        <button type="button" class="btn btn-default btn-sm" onclick="copy2()">
-            <span class="glyphicon glyphicon-copy"></span> Copiar 
-        </button>
-        <!-- <input class = "copiar" type="button" id="copiarTsug" value="Copiar para editar" onclick="copy2()" /> -->
-        <br>
+        <div id="footer">
+            <p>
 
-        <label for=''>Línea a corregir : </label>
-        <input class="textline" name='tcorrg' id="tcorrg" required = "true" >
-
-            <br>
-            <input type='submit' name='guardar' id='guardar' value='Guardar'>
-         </form>
-        <br>
-
-    <div id="footer">
-        <p>        
-            <a class = b2v href="seleccion.php"> Volver</a>
-            <a class = b3v href="logout.php"> Salir</a>
-            <br></p>
+                <a class=b2v href="seleccion.php"> Volver</a>
+                <a class=b3v href="logout.php"> Salir</a>
+                <br>
+            </p>
     </div>
-</div>
-   
-    
+
+
     <script type="text/javascript">
-        function copy() {
-            $("#tcorrg").val(document.getElementById("tocr").value);
-        }
-        function copy2() {
-            $("#tcorrg").val(document.getElementById("tsug").value); 
-        }
+    function copy() {
+        $("#tcorrg").val(document.getElementById("tocr").value);
+    }
+
+    function copy2() {
+        $("#tcorrg").val(document.getElementById("tsug").value);
+    }
+    
+    $(document).ready(function(){
+            $("#anterior").click(function(){
+                $("#tcorrg").val(" "); //se agrega espacio por atributo required de tcorrg
+            });
+    });
+
     </script>
 
-    
+
 </body>
+
 </html>
-
-

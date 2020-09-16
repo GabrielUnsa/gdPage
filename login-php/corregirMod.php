@@ -41,7 +41,7 @@
         date_default_timezone_set("America/Argentina/Salta");
         $fecha = date('Y-m-d H:i:s', time());
         
-        $sql = "UPDATE gd1 SET tcorrg = :tcorrg, fcorrg = :fcorrg, idusr = :idusr WHERE ncap= :ncap and npag = :npag and nline= :nline";
+        $sql = "UPDATE {$gd} SET tcorrg = :tcorrg, fcorrg = :fcorrg, idusr = :idusr WHERE ncap= :ncap and npag = :npag and nline= :nline";
         $stmt = $conn -> prepare($sql);
         $stmt -> bindParam( ':tcorrg',  $_POST['tcorrg'] );
         $stmt -> bindParam( ':idusr', $_SESSION['user_id']);
@@ -51,13 +51,53 @@
         $stmt -> bindParam( ':fcorrg', $fecha ); 
         $stmt -> execute(); 
         header("Location: modificar.php");
-/*         $records = $conn->prepare("SELECT ncap, npag, nline FROM {$gd} WHERE idusr IS NULL LIMIT 1");
-        $records->execute();
-        $results = $records->fetch();
-        $_POST['ncap'] = $results['ncap'];
-        $_POST['npag'] = $results['npag'];
-        $_POST['nline'] = $results['nline']; */
+
         
+    }
+    if(isset($_POST['anterior']) ){      
+
+            $minline = 1;
+
+        if ($_POST['nline'] > $minline ){
+            
+                $_POST['nline'] = $_POST['nline'] -1;
+                $records = $conn->prepare("SELECT tocr FROM {$_POST['GD']} WHERE ncap = :ncap AND npag = :npag AND nline = :nline");
+                $records->bindParam(':ncap', $_POST['ncap']);
+                $records->bindParam(':npag', $_POST['npag']);
+                $records->bindParam(':nline', $_POST['nline']);
+                $records->execute();
+                $results = $records->fetch();
+                $ncap = $_POST['ncap'];
+                $npag = $_POST['npag'];
+                $nline = $_POST['nline'];
+                $tocr = $results[0];         
+        }
+        elseif ($_POST['npag'] > $minpag) {
+            echo '<script language="javascript">';
+            echo 'alert("Volviendo a pagina anterior")';
+            echo '</script>';
+            $_POST['npag'] = $_POST['npag'] -1;
+            $records = $conn->prepare("SELECT max(npag) FROM {$_POST['GD']} WHERE idusr IS NOT NULL AND ncap = :ncap");
+            $records -> bindParam( ':ncap' ,$_POST['ncap']);
+            $records->execute();
+            $results = $records->fetch();
+            $_POST['nline'] = $results[0];
+            $records = $conn->prepare("SELECT tocr FROM {$_POST['GD']} WHERE ncap = :ncap AND npag = :npag AND nline = :nline");
+            $records->bindParam(':ncap', $_POST['ncap']);
+            $records->bindParam(':npag', $_POST['npag']);
+            $records->bindParam(':nline', $_POST['nline']);
+            $records->execute();
+            $results = $records->fetch();
+            $ncap = $_POST['ncap'];
+            $npag = $_POST['npag'];
+            $nline = $_POST['nline'];
+            $tocr = $results[0]; 
+        } else{
+            echo '<script language="javascript">';
+            echo 'alert("No es posible consultar")';
+            echo '</script>';
+            }
+  
     }
 
 
@@ -83,48 +123,53 @@
          <div id="header"><h1>Revisar Corrección</h1></div>
             <div id="navigation">
             <p><strong>Ubicación</strong></p>
-            <label for=''>Guemes Documentado: <?php  echo substr($_POST['GD'],-1,1); ?> </label>  
+            <label for=''>Guemes Documentado: <?php  echo substr($_POST['GD'],-1,1); ?> </label>
+                <input type="text" name ='GD' id ='GD' readonly='true' style="display:none" value=" <?php  echo $_POST['GD']; ?> ">
                 <br>
 
-            <label for=''>Capítulo: <?php  echo $ncap; ?> </label>  
-            <br>
+                <label for=''>Capítulo: <?php  echo $ncap; ?> </label>
+                <input type="text" name ='ncap' id ='ncap' readonly='true' style="display:none" value=" <?php  echo $ncap; ?> ">
+                <br>
 
-            <label for=''>Página: <?php  echo  $npag; ?> </label>
-            <br>
+                <label for=''>Página: <?php  echo  $npag; ?> </label>
+                <input type="text" name ='npag' id ='npag' readonly='true'style="display:none"  value="<?php  echo  $npag; ?>">
+                <br>
 
-            <label for=''>Número de línea: <?php  echo $nline; ?> </label>
-            <br>
+                <label for=''>Número de línea: <?php  echo $nline; ?> </label>
+                <input type="text" name ='nline' id ='nline' readonly='true'style="display:none"  value="<?php  echo $nline; ?>">
+                <br>
+
             </div>
 
-        <div id="wrapper">
-            <div id="content">
-            <label for=''>Línea original: </label> 
-        <div vlass="input-group">
-        <input class="textline"  maxname='tocr' id="tocr" disabled ='true' value= '<?php  echo $tocr; ?>' />
-        <div class="input-group-append">
-        <button type="button" class="btn btn-default btn-sm" onclick="copy()">
-            <span class="glyphicon glyphicon-copy"></span> Copiar 
-        </button>
-        </div>
-        </div>
+            <div id="wrapper">
+                <div id="content">
+                    <label for=''>Línea original: </label>
+                    <div class="input-group">
+                        <input class="textline" maxlenght="500"name='tocr' id="tocr" disabled='true' value='<?php  echo $tocr; ?>' />
+                        <button type="button" class="btn btn-default btn-sm" onclick="copy()">
+                            <span class="glyphicon glyphicon-copy"></span> Copiar
+                        </button>
+                    </div>
+                    <br>
 
-        <!-- <input class = "copiar" maxlenght="500" type="button" id="copiarTocr" value="Copiar para editar" onclick="copy()" /> -->
-        <br>
-        
-        <label for=''>Línea sugerida: </label> <br>
-        <input class="textline" maxlenght="500" name='tsug' id="tsug" disabled ='true' value='<?php  echo $tocr; ?>' />
-        <button type="button" class="btn btn-default btn-sm" onclick="copy2()">
-            <span class="glyphicon glyphicon-copy"></span> Copiar 
-        </button>
-        <!-- <input class = "copiar" type="button" id="copiarTsug" value="Copiar para editar" onclick="copy2()" /> -->
-        <br>
+                    <label for=''>Línea sugerida: </label> 
+                    <div class="input-group">
+                        <input class="textline" name='tsug' id="tsug" disabled='true' value='<?php  echo $tocr; ?>' />
+                        <button type="button" class="btn btn-default btn-sm" onclick="copy2()">
+                            <span class="glyphicon glyphicon-copy"></span> Copiar
+                        </button>
+                    </div>
+                    <br>
 
-        <label for=''>Línea a corregir : </label>
-        <input class="textline" name='tcorrg' id="tcorrg" required = "true" >
+                    <label for=''>Línea a corregir : </label>
+                    <input class="textline" name='tcorrg' id="tcorrg" required="true">
+                    <br>
 
-            <br>
-            <input type='submit' name='guardar' id='guardar' value='Guardar'>
-         </form>
+                    <input type='submit' name='guardar' id='guardar' value='Guardar'> 
+                    <input class=b2v type="submit" name="anterior" id="anterior" value="Línea Anterior">
+                </div>
+            </div>
+        </form>
         <br>
 
         </div>
@@ -149,6 +194,11 @@
         function copy2() {
             $("#tcorrg").val(document.getElementById("tsug").value); 
         }
+        $(document).ready(function(){
+            $("#anterior").click(function(){
+                $("#tcorrg").val(" ");
+            });
+        });
     </script>
     <script type = "text/javascript">        
         function volver(){
