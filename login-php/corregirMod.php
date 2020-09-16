@@ -54,35 +54,15 @@
 
         
     }
-    if(isset($_POST['anterior']) ){      
-
-            $minline = 1;
-
-        if ($_POST['nline'] > $minline ){
-            
-                $_POST['nline'] = $_POST['nline'] -1;
-                $records = $conn->prepare("SELECT tocr FROM {$_POST['GD']} WHERE ncap = :ncap AND npag = :npag AND nline = :nline");
-                $records->bindParam(':ncap', $_POST['ncap']);
-                $records->bindParam(':npag', $_POST['npag']);
-                $records->bindParam(':nline', $_POST['nline']);
-                $records->execute();
-                $results = $records->fetch();
-                $ncap = $_POST['ncap'];
-                $npag = $_POST['npag'];
-                $nline = $_POST['nline'];
-                $tocr = $results[0];         
-        }
-        elseif ($_POST['npag'] > $minpag) {
-            echo '<script language="javascript">';
-            echo 'alert("Volviendo a pagina anterior")';
-            echo '</script>';
-            $_POST['npag'] = $_POST['npag'] -1;
-            $records = $conn->prepare("SELECT max(npag) FROM {$_POST['GD']} WHERE idusr IS NOT NULL AND ncap = :ncap");
-            $records -> bindParam( ':ncap' ,$_POST['ncap']);
-            $records->execute();
-            $results = $records->fetch();
-            $_POST['nline'] = $results[0];
-            $records = $conn->prepare("SELECT tocr FROM {$_POST['GD']} WHERE ncap = :ncap AND npag = :npag AND nline = :nline");
+    if(isset($_POST['siguiente']) ){
+        $records = $conn->prepare("SELECT nline FROM gd1 WHERE ncap = :ncap  and npag = :npag ORDER BY nline desc LIMIT 1");
+        $records -> bindParam( ':ncap' ,$_POST['ncap']);
+        $records -> bindParam(':npag', $_POST['npag']);
+        $records->execute();
+        $results = $records->fetch();
+        $maxline = $results[0];  
+        if ($_POST['nline'] < $maxline ){
+            $records = $conn->prepare("SELECT id FROM {$_POST['GD']} WHERE ncap = :ncap AND npag = :npag AND nline = :nline");
             $records->bindParam(':ncap', $_POST['ncap']);
             $records->bindParam(':npag', $_POST['npag']);
             $records->bindParam(':nline', $_POST['nline']);
@@ -91,13 +71,54 @@
             $ncap = $_POST['ncap'];
             $npag = $_POST['npag'];
             $nline = $_POST['nline'];
-            $tocr = $results[0]; 
-        } else{
+            $id = $results[0]; 
+            $id = $id +1;
+            $records = $conn->prepare("SELECT tocr,ncap,npag,nline FROM {$_POST['GD']} WHERE  id = :id");
+            $records->bindParam(':id', $id);
+            $records->execute();
+            $results = $records->fetch();
+            //print_r($results);
+            $ncap = $results[1]; $_POST['ncap']=$results[1];
+            $npag = $results[2];$_POST['npag'] = $results[2];$_POST['nline'] = $results[3];
+            $nline = $results[3];
+            $tocr = $results[0];
+        }
+        else{
+            echo '<script language="javascript">';
+            echo 'alert("No es posible consultar. Se llegó a la ultima linea")';
+            echo '</script>';
+            }
+        
+    }
+    if(isset($_POST['anterior']) ){      
+        if ($_POST['nline'] > 1 ){
+            $records = $conn->prepare("SELECT id FROM {$_POST['GD']} WHERE ncap = :ncap AND npag = :npag AND nline = :nline");
+            $records->bindParam(':ncap', $_POST['ncap']);
+            $records->bindParam(':npag', $_POST['npag']);
+            $records->bindParam(':nline', $_POST['nline']);
+            $records->execute();
+            $results = $records->fetch();
+            $ncap = $_POST['ncap'];
+            $npag = $_POST['npag'];
+            $nline = $_POST['nline'];
+            $id = $results[0]; 
+            $id = $id -1;
+
+            $records = $conn->prepare("SELECT tocr,ncap,npag,nline FROM {$_POST['GD']} WHERE  id = :id");
+            $records->bindParam(':id', $id);
+            $records->execute();
+            $results = $records->fetch();
+            //print_r($results);
+            $ncap = $results[1]; $_POST['ncap']=$results[1];
+            $npag = $results[2];$_POST['npag'] = $results[2];$_POST['nline'] = $results[3];
+            $nline = $results[3];
+            $tocr = $results[0];
+        }
+        else{
             echo '<script language="javascript">';
             echo 'alert("No es posible consultar")';
             echo '</script>';
             }
-  
     }
 
 
@@ -165,8 +186,9 @@
                     <input class="textline" name='tcorrg' id="tcorrg" required="true">
                     <br>
 
-                    <input type='submit' name='guardar' id='guardar' value='Guardar'> 
-                    <input class=b2v type="submit" name="anterior" id="anterior" value="Línea Anterior">
+                    <input type='submit' name='guardar' id='guardar' value='Guardar y Volver'> 
+                    <input type="submit" name="anterior" id="anterior" value="Línea Anterior">
+                    <input type="submit" name="siguiente" id="siguiente" value="Línea Siguiente">
                 </div>
             </div>
         </form>
@@ -196,6 +218,12 @@
         }
         $(document).ready(function(){
             $("#anterior").click(function(){
+                $("#tcorrg").val(" ");
+            });
+        });
+
+        $(document).ready(function(){
+            $("#siguiente").click(function(){
                 $("#tcorrg").val(" ");
             });
         });

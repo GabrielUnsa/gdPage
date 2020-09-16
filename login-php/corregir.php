@@ -55,7 +55,7 @@
         $_POST['nline'] = $results['nline'];
   
     }
-    if(isset($_POST['anterior']) ){
+/*     if(isset($_POST['anterior']) ){
         if ($_POST['nline'] > 1 ){
             $_POST['nline'] = $_POST['nline'] -1;
             $records = $conn->prepare("SELECT tocr FROM {$_POST['GD']} WHERE ncap = :ncap AND npag = :npag AND nline = :nline");
@@ -96,8 +96,34 @@
                 echo '</script>';
                 }
   
+    } */
+    if( isset( $_POST['anterior'] ) ){
+        if ($_POST['nline'] > 1 ){
+            $records = $conn->prepare("SELECT id FROM {$_POST['GD']} WHERE ncap = :ncap AND npag = :npag AND nline = :nline");
+            $records->bindParam(':ncap', $_POST['ncap']);
+            $records->bindParam(':npag', $_POST['npag']);
+            $records->bindParam(':nline', $_POST['nline']);
+            $records->execute();
+            $results = $records->fetch();
+            $ncap = $_POST['ncap'];
+            $npag = $_POST['npag'];
+            $nline = $_POST['nline'];
+            $id = $results[0]; 
+            $id = $id -1;
+            $records = $conn->prepare("SELECT tocr,ncap,npag,nline FROM {$_POST['GD']} WHERE  id = :id");
+            $records->bindParam(':id', $_POST['id']);
+            $records->execute();
+            $results = $records->fetch();
+            $ncap = $results[1];
+            $npag = $results[2];
+            $nline = $results[3];
+            $tocr = $results[0];
+        } else{
+            echo '<script language="javascript">';
+            echo 'alert("No es posible consultar")';
+            echo '</script>';
+            }
     }
-
 /*         if (is_null($_POST['GD'])){
             echo $_POST['GD'];
         } */
@@ -111,6 +137,7 @@
         $ncap = $_POST['ncap'];
         $npag = $_POST['npag'];
         $nline = $_POST['nline'];
+        $gd = $_POST['GD'];
         $tocr = $results[0]; 
         //print_r($_POST); 
         ?>
@@ -121,7 +148,7 @@
             <div id="navigation">
                 <p><strong>Ubicación</strong></p>
                 <label for=''>Guemes Documentado: <?php  echo substr($_POST['GD'],-1,1); ?> </label>
-                <input type="text" name ='GD' id ='GD' readonly='true' style="display:none" value=" <?php  echo $_POST['GD']; ?> ">
+                <input type="text" name ='GD' id ='GD' readonly='true' style="display:none" value=" <?php  echo $gd; ?> ">
                 <br>
 
                 <label for=''>Capítulo: <?php  echo $ncap; ?> </label>
