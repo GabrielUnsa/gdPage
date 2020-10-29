@@ -145,12 +145,12 @@
      else echo substr($gd,-2,2);
     }
  ?>
-     <div id = "container">
-         <form id = "FORM" method = "POST" action=""> 
-         <div id="header"><h1>Revisar Corrección</h1></div>
+    <div id="container">
+        <form id="FORM" method="POST" action="" style="display:inline">
+            
             <div id="navigation">
-            <p><strong>Ubicación</strong></p>
-            <label for=''>Guemes Documentado: <?php $res = intval(preg_replace('/[^0-9]+/', '', $gd), 10);  echo $res;  ?> </label>
+                <p><strong>Ubicación</strong></p>
+                <label for=''>Guemes Documentado: <?php  $res = intval(preg_replace('/[^0-9]+/', '', $gd), 10);  echo $res;?> </label>
                 <input type="text" name ='GD' id ='GD' readonly='true' style="display:none" value=" <?php  echo $gd; ?> ">
                 <br>
 
@@ -166,6 +166,11 @@
                 <input type="text" name ='nline' id ='nline' readonly='true'style="display:none"  value="<?php  echo $nline; ?>">
                 <br>
 
+                <p>
+                    <a class=b3v href="logout.php"> Salir</a>
+                    <a class=b2v href="seleccion.php"> Volver</a>
+                    <br>
+                </p>
             </div>
 
             <div id="wrapper">
@@ -179,7 +184,7 @@
                     </div>
                     <br>
 
-                    <label for=''>Línea sugerida: </label> 
+                    <label for='tsug'>Línea sugerida: </label> 
                     <div class="input-group">
                         <input class="textline" name='tsug' id="tsug" disabled='true' value='<?php  echo $tocr; ?>' />
                         <button type="button" class="btn btn-default btn-sm" onclick="copy2()">
@@ -188,32 +193,25 @@
                     </div>
                     <br>
 
-                    <label for=''>Línea a corregir : </label>
+                    <label for='tcorrg'>Línea a corregir : </label>
                     <input class="textline" name='tcorrg' id="tcorrg" required="true">
                     <br>
 
-                    <input type='submit' name='guardar' id='guardar' value='Guardar y Volver'> 
-                    <input type="submit" name="anterior" id="anterior" value="Línea Anterior">
-                    <!-- <input type="submit" name="siguiente" id="siguiente" value="Línea Siguiente"> -->
+                    <p >                    
+                        <input  type='submit' name='guardar' id='guardar' value='Guardar'> 
+                        <input  type="submit" name="anterior" id="anterior" value="Línea Anterior">
+
+                    </p>
                 </div>
             </div>
         </form>
-        <br>
 
-        </div>
-  </div>
+<!-- muestra pdf en la pagina actual que se esta revisando -->
+  <!-- <?php ?> -->
+   <!-- echo "<center> <iframe id='pdfgd' style='border:1px solid #666CCC' title='Guemes Documentado' src='pdfs/".$gd."#page=".$npag ."' frameborder='1' scrolling='auto' height='500px' width='100%' > </iframe> </center>"; -->
+    
 
-
-  <div id="footer">
-    <p>         
-         <a class = b3v href="logout.php"> Salir</a>      
-        <a class = b2v href="seleccion.php"> Volver</a>
-
-        <br></p>
-  </div>
-</div>
-     </div>   
-
+</body>
 
     
     <script type="text/javascript">
@@ -243,7 +241,7 @@
 
 </script>
     
-</body>
+
 </html>
 
 

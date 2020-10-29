@@ -24,6 +24,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <title>Revisar Corrección</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    
 </head>
 
 <body>
@@ -125,9 +127,7 @@
             echo '</script>';
             }
     }
-/*         if (is_null($_POST['GD'])){
-            echo $_POST['GD'];
-        } */
+
 
         $records = $conn->prepare("SELECT tocr FROM {$_POST['GD']} WHERE ncap = :ncap AND npag = :npag AND nline = :nline");
         $records->bindParam(':ncap', $_POST['ncap']);
@@ -144,7 +144,7 @@
         ?>
 
     <div id="container">
-        <form id="FORM" method="POST" action="">
+        <form id="FORM" method="POST" action="" style="display:inline">
             
             <div id="navigation">
                 <p><strong>Ubicación</strong></p>
@@ -163,6 +163,12 @@
                 <label for=''>Número de línea: <?php  echo $nline; ?> </label>
                 <input type="text" name ='nline' id ='nline' readonly='true'style="display:none"  value="<?php  echo $nline; ?>">
                 <br>
+
+                <p>
+                    <a class=b3v href="logout.php"> Salir</a>
+                    <a class=b2v href="seleccion.php"> Volver</a>
+                    <br>
+                </p>
             </div>
 
             <div id="wrapper">
@@ -176,7 +182,7 @@
                     </div>
                     <br>
 
-                    <label for=''>Línea sugerida: </label> 
+                    <label for='tsug'>Línea sugerida: </label> 
                     <div class="input-group">
                         <input class="textline" name='tsug' id="tsug" disabled='true' value='<?php  echo $tocr; ?>' />
                         <button type="button" class="btn btn-default btn-sm" onclick="copy2()">
@@ -185,27 +191,26 @@
                     </div>
                     <br>
 
-                    <label for=''>Línea a corregir : </label>
+                    <label for='tcorrg'>Línea a corregir : </label>
                     <input class="textline" name='tcorrg' id="tcorrg" required="true">
                     <br>
 
-                    <input type='submit' name='guardar' id='guardar' value='Guardar'> 
-                    <input class=b2v type="submit" name="anterior" id="anterior" value="Línea Anterior">
+                    <p >                    
+                        <input  type='submit' name='guardar' id='guardar' value='Guardar'> 
+                        <input  type="submit" name="anterior" id="anterior" value="Línea Anterior">
+
+                    </p>
                 </div>
             </div>
         </form>
 
-        <div id="footer">
-            <p>
-            
-                <a class=b3v href="logout.php"> Salir</a>
-                <a class=b2v href="seleccion.php"> Volver</a>
+<!-- muestra pdf en la pagina actual que se esta revisando -->
+  <!-- <?php ?> -->
+   <!-- echo "<center> <iframe id='pdfgd' style='border:1px solid #666CCC' title='Guemes Documentado' src='pdfs/".$gd."#page=".$npag ."' frameborder='1' scrolling='auto' height='500px' width='100%' > </iframe> </center>"; -->
+    
 
-                <br>
-            </p>
-    </div>
-
-
+ 
+</body>
     <script type="text/javascript">
     function copy() {
         $("#tcorrg").val(document.getElementById("tocr").value);
@@ -222,8 +227,5 @@
     });
 
     </script>
-
-
-</body>
 
 </html>
