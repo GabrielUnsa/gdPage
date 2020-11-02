@@ -31,9 +31,9 @@
 
 <body> 
     <?php require 'partials/header.php' ?>
-    
 
-        
+    <div id="header"> <h1>Revisar Corrección</h1> </div>
+
     <?php 
     $gd = $_POST['GD'];
 
@@ -54,43 +54,11 @@
 
         
     }
-/*     if(isset($_POST['siguiente']) ){
-        $records = $conn->prepare("SELECT nline FROM gd1 WHERE ncap = :ncap  and npag = :npag ORDER BY nline desc LIMIT 1");
-        $records -> bindParam( ':ncap' ,$_POST['ncap']);
-        $records -> bindParam(':npag', $_POST['npag']);
-        $records->execute();
-        $results = $records->fetch();
-        $maxline = $results[0];  
-        if ($_POST['nline'] < $maxline ){
-            $records = $conn->prepare("SELECT id FROM {$_POST['GD']} WHERE ncap = :ncap AND npag = :npag AND nline = :nline");
-            $records->bindParam(':ncap', $_POST['ncap']);
-            $records->bindParam(':npag', $_POST['npag']);
-            $records->bindParam(':nline', $_POST['nline']);
-            $records->execute();
-            $results = $records->fetch();
-            $ncap = $_POST['ncap'];
-            $npag = $_POST['npag'];
-            $nline = $_POST['nline'];
-            $id = $results[0]; 
-            $id = $id +1;
-            $records = $conn->prepare("SELECT tocr,ncap,npag,nline FROM {$_POST['GD']} WHERE  id = :id");
-            $records->bindParam(':id', $id);
-            $records->execute();
-            $results = $records->fetch();
-            //print_r($results);
-            $ncap = $results[1]; $_POST['ncap']=$results[1];
-            $npag = $results[2];$_POST['npag'] = $results[2];$_POST['nline'] = $results[3];
-            $nline = $results[3];
-            $tocr = $results[0];
-        }
-        else{
-            echo '<script language="javascript">';
-            echo 'alert("No es posible consultar. Se llegó a la ultima linea")';
-            echo '</script>';
-            }
-        
-    } */
-    if(isset($_POST['anterior']) ){      
+
+    /*
+    El boton anterior solo nos llevara a la linea anterior, no guardara lo que modifique en el campo para corregir
+    */
+    if( isset( $_POST['anterior'] ) ){
         if ($_POST['nline'] > 1 ){
             $records = $conn->prepare("SELECT id FROM {$_POST['GD']} WHERE ncap = :ncap AND npag = :npag AND nline = :nline");
             $records->bindParam(':ncap', $_POST['ncap']);
@@ -104,29 +72,28 @@
             $id = $results[0]; 
             $id = $id -1;
 
-            $records = $conn->prepare("SELECT tocr,ncap,npag,nline FROM {$_POST['GD']} WHERE  id = :id");
+            $records = $conn->prepare("SELECT tocr,ncap,npag,nline,tcorrg,fcorrg FROM {$_POST['GD']} WHERE  id = :id");
             $records->bindParam(':id', $id);
             $records->execute();
             $results = $records->fetch();
-            //print_r($results);
             $ncap = $results[1]; $_POST['ncap']=$results[1];
             $npag = $results[2]; $_POST['npag'] = $results[2];
             $nline = $results[3]; $_POST['nline'] = $results[3];
             $tocr = $results[0];
-        }
-        else{
+            $tcorregida = $results[4];
+            $fcorrg = $results[5];
+        } else{
             echo '<script language="javascript">';
             echo 'alert("No es posible consultar")';
             echo '</script>';
             }
     }
 
-
 /*         if (is_null($_POST['GD'])){
             echo $_POST['GD'];
         } */
 
-        $records = $conn->prepare("SELECT tocr FROM {$_POST['GD']} WHERE ncap = :ncap AND npag = :npag AND nline = :nline");
+        $records = $conn->prepare("SELECT tocr,tcorrg,fcorrg FROM {$_POST['GD']} WHERE ncap = :ncap AND npag = :npag AND nline = :nline");
         $records->bindParam(':ncap', $_POST['ncap']);
         $records->bindParam(':npag', $_POST['npag']);
         $records->bindParam(':nline', $_POST['nline']);
@@ -136,7 +103,8 @@
         $npag = $_POST['npag'];
         $nline = $_POST['nline'];
         $tocr = $results[0]; 
-        //print_r($_POST); 
+        $tcorregida = $results[1];
+        $fcorrg = $results[2]; 
         ?>
 
 <?
@@ -148,8 +116,10 @@
     <div id="container">
         <form id="FORM" method="POST" action="" style="display:inline">
             
-            <div id="navigation">
-                <p><strong>Ubicación</strong></p>
+            <div id="navigation2">
+                <label class="titulo_nav" for=""> Ubicación actual </label>   
+                <hr class="linea">            
+                
                 <label for=''>Guemes Documentado: <?php  $res = intval(preg_replace('/[^0-9]+/', '', $gd), 10);  echo $res;?> </label>
                 <input type="text" name ='GD' id ='GD' readonly='true' style="display:none" value=" <?php  echo $gd; ?> ">
                 <br>
@@ -166,6 +136,13 @@
                 <input type="text" name ='nline' id ='nline' readonly='true'style="display:none"  value="<?php  echo $nline; ?>">
                 <br>
 
+                 <label for=''> Modificada: <?php  echo $fcorrg; ?> </label>
+                <input type="text" name ='fcorrg' id ='fcorrg' readonly='true'style="display:none"  value="<?php  echo $fcorrg; ?>">
+              
+
+                <hr class="linea2"> 
+            
+                <br>
                 <p>
                     <a class=b3v href="logout.php"> Salir</a>
                     <a class=b2v href="seleccion.php"> Volver</a>
@@ -192,6 +169,12 @@
                         </button>
                     </div>
                     <br>
+                    
+                     <label for='tcorregida'>Línea corregida: </label> 
+                    <div class="input-group">
+                        <input class="textline" name='tcorregida' id="tcorregida" disabled='true' value='<?php  echo $tcorregida; ?>' />
+                    </div>
+                    <br> 
 
                     <label for='tcorrg'>Línea a corregir : </label>
                     <input class="textline" name='tcorrg' id="tcorrg" required="true">
@@ -207,7 +190,7 @@
         </form>
 
 <!-- muestra pdf en la pagina actual que se esta revisando -->
-  <!-- <?php ?> -->
+
    <!-- echo "<center> <iframe id='pdfgd' style='border:1px solid #666CCC' title='Guemes Documentado' src='pdfs/".$gd."#page=".$npag ."' frameborder='1' scrolling='auto' height='500px' width='100%' > </iframe> </center>"; -->
     
 
@@ -234,10 +217,10 @@
         });
     </script>
     <script type = "text/javascript">        
-        function volver(){
+/*         function volver(){
             //alert("Linea guardada" );
             window.location.href = 'modificar.php';            
-        }
+        } */
 
 </script>
     

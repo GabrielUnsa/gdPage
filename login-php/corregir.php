@@ -57,48 +57,7 @@
         $_POST['nline'] = $results['nline'];
   
     }
-/*     if(isset($_POST['anterior']) ){
-        if ($_POST['nline'] > 1 ){
-            $_POST['nline'] = $_POST['nline'] -1;
-            $records = $conn->prepare("SELECT tocr FROM {$_POST['GD']} WHERE ncap = :ncap AND npag = :npag AND nline = :nline");
-            $records->bindParam(':ncap', $_POST['ncap']);
-            $records->bindParam(':npag', $_POST['npag']);
-            $records->bindParam(':nline', $_POST['nline']);
-            $records->execute();
-            $results = $records->fetch();
-            $ncap = $_POST['ncap'];
-            $npag = $_POST['npag'];
-            $nline = $_POST['nline'];
-            $tocr = $results[0]; 
-        }
 
-        elseif ( $_POST['npag'] > 1 ) {
-                echo '<script language="javascript">';
-                echo 'alert("Volviendo a pagina anterior")';
-                echo '</script>';
-                $_POST['npag'] = $_POST['npag'] -1;
-                $records = $conn->prepare("SELECT max(npag) FROM {$_POST['GD']} WHERE idusr IS NOT NULL AND ncap = :ncap");
-                $records -> bindParam( ':ncap' ,$_POST['ncap']);
-                $records->execute();
-                $results = $records->fetch();
-                $_POST['nline'] = $results[0];
-                $records = $conn->prepare("SELECT tocr FROM {$_POST['GD']} WHERE ncap = :ncap AND npag = :npag AND nline = :nline");
-                $records->bindParam(':ncap', $_POST['ncap']);
-                $records->bindParam(':npag', $_POST['npag']);
-                $records->bindParam(':nline', $_POST['nline']);
-                $records->execute();
-                $results = $records->fetch();
-                $ncap = $_POST['ncap'];
-                $npag = $_POST['npag'];
-                $nline = $_POST['nline'];
-                $tocr = $results[0]; 
-            } else{
-                echo '<script language="javascript">';
-                echo 'alert("No es posible consultar")';
-                echo '</script>';
-                }
-  
-    } */
     if( isset( $_POST['anterior'] ) ){
         if ($_POST['nline'] > 1 ){
             $records = $conn->prepare("SELECT id FROM {$_POST['GD']} WHERE ncap = :ncap AND npag = :npag AND nline = :nline");
@@ -147,7 +106,8 @@
         <form id="FORM" method="POST" action="" style="display:inline">
             
             <div id="navigation">
-                <p><strong>Ubicación</strong></p>
+                <label class="titulo_nav" for=""> Ubicación actual </label>
+                <hr class="linea">            
                 <label for=''>Guemes Documentado: <?php  $res = intval(preg_replace('/[^0-9]+/', '', $gd), 10);  echo $res;?> </label>
                 <input type="text" name ='GD' id ='GD' readonly='true' style="display:none" value=" <?php  echo $gd; ?> ">
                 <br>
@@ -162,8 +122,10 @@
 
                 <label for=''>Número de línea: <?php  echo $nline; ?> </label>
                 <input type="text" name ='nline' id ='nline' readonly='true'style="display:none"  value="<?php  echo $nline; ?>">
-                <br>
+              
+                <hr class="linea">    
 
+                <br>
                 <p>
                     <a class=b3v href="logout.php"> Salir</a>
                     <a class=b2v href="seleccion.php"> Volver</a>

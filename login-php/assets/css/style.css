@@ -216,11 +216,11 @@ textarea{
     outline: none;
     padding: 10px;
     display: block;
-    width: 500px;
+    width: 550px;
     height: 20px;
     border-radius: 5px;
     border: 1px solid #eee;
-    margin: 10px auto;
+    margin: 10 px auto;
 }
 
 .container {
@@ -280,31 +280,48 @@ textarea{
     }
   }
 
-  html,body{margin:0;padding:0}
-body{font: 76% arial,sans-serif;text-align:center}
-p{margin:0 10px 10px}
+  html,body{
+    margin:0;
+    padding:0
+  }
+
+body{
+  font: 76% arial,sans-serif;
+  text-align:center
+}
+
+p{
+  margin:0 10px 10px
+}
+
 div#header{
   background-color:#0098cb;
 }
+
 div#header h1{
   height:50px;
   line-height:50px;
   margin:0;
   padding-left:10px;
 }
+
 div#container{
   text-align:left;
-  width:800px;
+  width:850px;
   height:450px;
   margin: 0 auto;
 }
+
 div#content{
   float:right;
-  width:570px;
+  width:630px;
   background-color: rgb(224, 235, 247);
   padding: 15px;
   margin-top: 10px;
+  border: 2px solid #0098cb;
+
 }
+
 div#content p{
   line-height:1.4
 }
@@ -313,9 +330,24 @@ div#navigation{
   background-color: rgb(224, 235, 247);
   float:left;
   width:210px;
-  height:200px;line-height:30px;margin-top:10px;padding-left:10px;
+  height:250px;
+  line-height:30px;
+  margin-top:10px;
+  padding-left:10px;
+  border: 2px solid #0098cb;
 }
 
+div#navigation2{
+  /* background:#a3cce6; */
+  background-color: rgb(224, 235, 247);
+  float:left;
+  width:210px;
+  height:320px;
+  line-height:30px;
+  margin-top:10px;
+  padding-left:10px;
+  border: 2px solid #0098cb;
+}
 
 div#footer{
   /* background:#0098cb; */
@@ -328,5 +360,28 @@ div#footer p{
 
 }
 
+.titulo_nav{
+  color: #0882ab;
+  font-size: 16px;
+  text-align: center;
 
+}
+
+.linea {
+  margin-top: -5px;
+  margin-bottom: 0px;
+  margin-left: 0px;
+  border: 0; height: 2px; 
+ /* border-top: 1px solid #0098cb; */
+  border-bottom: 1px solid #0098cb;
+}
+
+.linea2 {
+  margin-top: -5px;
+  margin-bottom: 0px;
+  margin-left: 0px;
+  border: 0; height: 2px; 
+ /* border-top: 1px solid #0098cb; */
+  border-bottom: 1px solid #0098cb;
+}
 
